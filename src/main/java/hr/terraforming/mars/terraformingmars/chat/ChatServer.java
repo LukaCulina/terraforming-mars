@@ -14,7 +14,7 @@ public class ChatServer {
 
     private static final int RANDOM_PORT_HINT = 0;
 
-    public static void main(String[] args) {
+    static void main() {
         try {
             Registry registry = LocateRegistry.createRegistry(ConfigurationReader.getIntegerValue(
                     ConfigurationKey.RMI_PORT));

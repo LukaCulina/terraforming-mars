@@ -123,8 +123,8 @@ public class HexBoardDrawer {
 
     private Polygon createHexPolygon() {
         Polygon hex = new Polygon();
-        for (double a = 0; a < 6; a++) {
-            double angle = Math.toRadians(60 * a - 30);
+        for (int a = 0; a < 6; a++) {
+            double angle = Math.toRadians(60 * a - 30.0);
             double px = hexRadius * Math.cos(angle);
             double py = hexRadius * Math.sin(angle);
             hex.getPoints().addAll(px, py);

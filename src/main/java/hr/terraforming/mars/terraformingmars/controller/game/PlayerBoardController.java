@@ -40,7 +40,6 @@ public class PlayerBoardController {
     @FXML private Button showHandButton;
     @FXML private Button showPlayedButton;
     private Player player;
-    private ActionManager actionManager;
     private boolean isShowingHand = true;
 
     @FXML
@@ -60,7 +59,6 @@ public class PlayerBoardController {
 
     public void setPlayer(Player player, ActionManager actionManager) {
         this.player = player;
-        this.actionManager = actionManager;
         if (player == null) return;
 
         updatePlayerInfo();
@@ -72,7 +70,8 @@ public class PlayerBoardController {
         showPlayedButton.setVisible(isMyPlayer);
 
         if (isMyPlayer) {
-            updateCardsDisplay();
+            setupButtons(actionManager);
+            updateCardsDisplay(actionManager);
         } else {
             cardsDisplayArea.getChildren().clear();
         }
@@ -97,19 +96,19 @@ public class PlayerBoardController {
         heatProductionLabel.textProperty().bind(player.productionProperty(ResourceType.HEAT).asString());
     }
 
-    @FXML
-    private void showHandCardsView() {
-        isShowingHand = true;
-        updateCardsDisplay();
+    private void setupButtons(ActionManager actionManager) {
+        showHandButton.setOnAction(_ -> {
+            isShowingHand = true;
+            updateCardsDisplay(actionManager);
+        });
+
+        showPlayedButton.setOnAction(_ -> {
+            isShowingHand = false;
+            updateCardsDisplay(actionManager);
+        });
     }
 
-    @FXML
-    private void showPlayedCardsView() {
-        isShowingHand = false;
-        updateCardsDisplay();
-    }
-
-    private void updateCardsDisplay() {
+    private void updateCardsDisplay(ActionManager actionManager) {
         if (player == null || cardsDisplayArea == null) return;
 
         cardsDisplayArea.getChildren().clear();
