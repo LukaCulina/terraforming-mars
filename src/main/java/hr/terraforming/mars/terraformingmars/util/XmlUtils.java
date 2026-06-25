@@ -4,7 +4,11 @@ import hr.terraforming.mars.terraformingmars.enums.ActionType;
 import hr.terraforming.mars.terraformingmars.enums.TileType;
 import hr.terraforming.mars.terraformingmars.exception.FxmlLoadException;
 import hr.terraforming.mars.terraformingmars.model.GameMove;
-import org.w3c.dom.*;
+import lombok.extern.slf4j.Slf4j;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import javax.xml.XMLConstants;
@@ -27,15 +31,16 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 public class XmlUtils {
-
-    private XmlUtils() {
-        throw new IllegalStateException("Utility class");
-    }
 
     private static final String GAME_MOVES_XML_FILE = "xml/gameMoves.xml";
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
     private static final String TILE_TYPE = "TileType";
+
+    private XmlUtils() {
+        throw new IllegalStateException("Utility class");
+    }
 
     @SuppressWarnings("HttpUrlsUsage")
     private static DocumentBuilderFactory createSecureDocumentBuilderFactory() throws ParserConfigurationException {
@@ -56,7 +61,8 @@ public class XmlUtils {
         if (xmlFile.exists() && xmlFile.length() > 0) {
             try {
                 return db.parse(xmlFile);
-            } catch (SAXException _) {
+            } catch (SAXException e) {
+                log.error("XML file is corrupted. Overwriting with a new document. Error: {}", e.getMessage());
                 return createNewDocument(db);
             }
         }
@@ -90,7 +96,7 @@ public class XmlUtils {
         }
     }
 
-    public static List<GameMove> readGameMoves() {
+    public static synchronized List<GameMove> readGameMoves() {
         List<GameMove> moves = new ArrayList<>();
         File xmlFile = new File(GAME_MOVES_XML_FILE);
         if (!xmlFile.exists()) {
@@ -144,7 +150,7 @@ public class XmlUtils {
         return moves;
     }
 
-    public static void clearGameMoves() {
+    public static synchronized void clearGameMoves() {
         Path path = Paths.get(GAME_MOVES_XML_FILE);
         try {
             Files.deleteIfExists(path);
