@@ -1,34 +1,43 @@
 package hr.terraforming.mars.terraformingmars.jndi;
 
 import hr.terraforming.mars.terraformingmars.exception.ConfigurationException;
-import javax.naming.NamingException;
-import java.io.FileReader;
+
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 public class ConfigurationReader {
-    private static final String CONFIGURATION_FILE_NAME = "C:/conf/application.properties";
+    private static final Properties props = new Properties();
+    private static final String CONFIG_FILE = "/application.properties";
 
-    private ConfigurationReader() {}
-
-    public static String getStringValue(ConfigurationKey key) {
-        try (InitialDirContextCloseable context = new InitialDirContextCloseable()){
-
-            Object object = context.lookup(CONFIGURATION_FILE_NAME);
-
-            Properties props = new Properties();
-            try(FileReader reader = new FileReader(object.toString())) {
-                props.load(reader);
+    static {
+        try (InputStream input = ConfigurationReader.class.getResourceAsStream(CONFIG_FILE)) {
+            if (input == null) {
+                throw new ConfigurationException("Configuration file not found in resources: " + CONFIG_FILE);
             }
-
-            return props.getProperty(key.getKey());
-
-        } catch (NamingException | IOException e) {
-            throw new ConfigurationException("Failed to read the configuration key " + key.getKey(), e);
+            props.load(input);
+        } catch (IOException e) {
+            throw new ConfigurationException("Error loading application configuration!", e);
         }
     }
 
+    private ConfigurationReader() {
+    }
+
+    public static String getStringValue(ConfigurationKey key) {
+        String value = props.getProperty(key.getKey());
+        if (value == null) {
+            throw new ConfigurationException("Configuration key '" + key.getKey() + "' does not exist.");
+        }
+        return value;
+    }
+
     public static Integer getIntegerValue(ConfigurationKey key) {
-        return Integer.valueOf(getStringValue(key));
+
+        try {
+            return Integer.valueOf(getStringValue(key));
+        } catch (NumberFormatException e) {
+            throw new ConfigurationException("Invalid number format for configuration key: '" + key.getKey() + "'", e);
+        }
     }
 }
