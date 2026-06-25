@@ -5,7 +5,9 @@ import hr.terraforming.mars.terraformingmars.exception.NetworkException;
 import hr.terraforming.mars.terraformingmars.jndi.ConfigurationKey;
 import hr.terraforming.mars.terraformingmars.jndi.ConfigurationReader;
 import hr.terraforming.mars.terraformingmars.manager.ActionManager;
-import hr.terraforming.mars.terraformingmars.model.*;
+import hr.terraforming.mars.terraformingmars.model.GameBoard;
+import hr.terraforming.mars.terraformingmars.model.GameManager;
+import hr.terraforming.mars.terraformingmars.model.GameState;
 import javafx.application.Platform;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
@@ -22,13 +25,13 @@ public class GameServerThread implements Runnable {
 
     private final GameManager gameManager;
     private final GameBoard gameBoard;
-    private ActionManager actionManager;
     private final int maxPlayers;
     private final List<ClientHandler> connectedClients = new CopyOnWriteArrayList<>();
+    private final List<GameStateListener> localListeners = new CopyOnWriteArrayList<>();
+    private ActionManager actionManager;
     @Setter
     private Consumer<Integer> onPlayerCountChanged;
     private ServerSocket serverSocket;
-    private final List<GameStateListener> localListeners = new CopyOnWriteArrayList<>();
     private CardDistributor cardDistributor;
     private volatile boolean running = true;
 
@@ -61,12 +64,6 @@ public class GameServerThread implements Runnable {
                 connectedClients.add(handler);
                 new Thread(handler).start();
 
-                if (handler.waitUntilReady(5000)) {
-                    log.debug("ClientHandler ready");
-                } else {
-                    log.error("ClientHandler failed to initialize");
-                }
-
                 if (onPlayerCountChanged != null) {
                     Platform.runLater(() -> onPlayerCountChanged.accept(connectedClients.size()));
                 }
@@ -74,6 +71,12 @@ public class GameServerThread implements Runnable {
             }
             log.info("All players connected, game can start!");
 
+        } catch (SocketException e) {
+            if (!running) {
+                log.info("Server successfully shut down (Socket closed deliberately).");
+            } else {
+                log.error("Socket error unexpectedly: ", e);
+            }
         } catch (IOException e) {
             if (running) {
                 throw new NetworkException("Failed to start server on port " + port, e);
@@ -108,7 +111,7 @@ public class GameServerThread implements Runnable {
         cardDistributor.distributeResearchCards();
     }
 
-    private void ensureDistributor() {
+    private synchronized void ensureDistributor() {
         if (cardDistributor == null) {
             this.cardDistributor = new CardDistributor(gameManager, this, actionManager);
         }
