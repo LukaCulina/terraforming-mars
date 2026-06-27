@@ -2,24 +2,29 @@ package hr.terraforming.mars.terraformingmars.network;
 
 import hr.terraforming.mars.terraformingmars.exception.NetworkException;
 import hr.terraforming.mars.terraformingmars.manager.ActionManager;
-import hr.terraforming.mars.terraformingmars.model.*;
+import hr.terraforming.mars.terraformingmars.model.ApplicationConfiguration;
+import hr.terraforming.mars.terraformingmars.model.GameManager;
+import hr.terraforming.mars.terraformingmars.model.GameMove;
+import hr.terraforming.mars.terraformingmars.model.GameState;
 import hr.terraforming.mars.terraformingmars.network.message.CardChoiceMessage;
 import hr.terraforming.mars.terraformingmars.network.message.CorporationChoiceMessage;
 import hr.terraforming.mars.terraformingmars.network.message.PlayerNameMessage;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 public class ClientHandler implements Runnable {
     private final Socket socket;
     private final GameManager gameManager;
-
+    private final CountDownLatch readyLatch = new CountDownLatch(1);
     private ObjectOutputStream clientOutput;
     private ObjectInputStream clientInput;
     private volatile boolean isClientReady = false;
@@ -27,7 +32,6 @@ public class ClientHandler implements Runnable {
     @Getter
     private String playerName;
     private ServerMessageHandler messageHandler;
-    private final CompletableFuture<Void> readyFuture = new CompletableFuture<>();
 
     public ClientHandler(Socket socket, GameManager gameManager, ActionManager actionManager) {
         this.socket = socket;
@@ -36,7 +40,7 @@ public class ClientHandler implements Runnable {
     }
 
     public void setActionManager(ActionManager actionManager) {
-       messageHandler = new ServerMessageHandler(
+        messageHandler = new ServerMessageHandler(
                 gameManager,
                 actionManager,
                 this::broadcastIfAvailable
@@ -51,13 +55,14 @@ public class ClientHandler implements Runnable {
             clientOutput = outputStream;
             clientInput = inputStream;
             isClientReady = true;
-            readyFuture.complete(null);
+            readyLatch.countDown();
 
             while (isServerRunning && !socket.isClosed()) {
                 Object obj = inputStream.readObject();
                 handleMessage(obj);
             }
-
+        } catch (EOFException _) {
+            log.info("Client {} disconnected gracefully.", playerName != null ? playerName : "Unknown");
         } catch (IOException | ClassNotFoundException e) {
             if (isServerRunning) {
                 throw new NetworkException("Client handler connection error", e);
@@ -87,20 +92,19 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    public boolean waitUntilReady(long timeoutMillis) {
-        try {
-            readyFuture.get(timeoutMillis, java.util.concurrent.TimeUnit.MILLISECONDS);
-            return true;
-        } catch (Exception _) {
-            Thread.currentThread().interrupt();
-            return false;
-        }
-    }
-
     public synchronized void sendGameState(GameState state) {
         log.debug("Sending GameState to {}", playerName);
 
-        if (!isClientReady) { return; }
+        try {
+            boolean ready = readyLatch.await(2, TimeUnit.SECONDS);
+            if (!ready) {
+                log.warn("ClientHandler not ready after 2 seconds, skipping send");
+                return;
+            }
+        } catch (InterruptedException _) {
+            Thread.currentThread().interrupt();
+            return;
+        }
 
         try {
             clientOutput.writeObject(state);

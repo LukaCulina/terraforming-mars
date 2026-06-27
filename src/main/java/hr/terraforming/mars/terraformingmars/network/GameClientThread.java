@@ -1,8 +1,12 @@
 package hr.terraforming.mars.terraformingmars.network;
 
 import hr.terraforming.mars.terraformingmars.exception.NetworkException;
-import hr.terraforming.mars.terraformingmars.model.*;
-import hr.terraforming.mars.terraformingmars.network.message.*;
+import hr.terraforming.mars.terraformingmars.model.Card;
+import hr.terraforming.mars.terraformingmars.model.GameMove;
+import hr.terraforming.mars.terraformingmars.model.GameState;
+import hr.terraforming.mars.terraformingmars.network.message.CardChoiceMessage;
+import hr.terraforming.mars.terraformingmars.network.message.CorporationChoiceMessage;
+import hr.terraforming.mars.terraformingmars.network.message.PlayerNameMessage;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.EOFException;
@@ -17,12 +21,12 @@ import java.util.List;
 public class GameClientThread implements Runnable {
     private final String hostname;
     private final int port;
+    private final List<GameStateListener> listeners = new ArrayList<>();
+    private final ClientMessageDispatcher messageDispatcher;
     private Socket clientSocket;
     private ObjectOutputStream serverOutput;
-    private final List<GameStateListener> listeners = new ArrayList<>();
     private volatile boolean running = true;
     private GameState lastGameState;
-    private final ClientMessageDispatcher messageDispatcher;
 
     public GameClientThread(String hostname, int port) {
         this.hostname = hostname;

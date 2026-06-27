@@ -8,10 +8,17 @@ import hr.terraforming.mars.terraformingmars.view.ScreenNavigator;
 import javafx.application.Application;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class TerraformingMarsApplication extends Application {
+    @SuppressWarnings("unused")
+    static void main(String[] args) {
+        launch();
+    }
+
     @Override
-   public void start(Stage stage) {
+    public void start(Stage stage) {
 
         XmlUtils.clearGameMoves();
 
@@ -42,9 +49,5 @@ public class TerraformingMarsApplication extends Application {
         ScreenNavigator.showStartMenu();
 
         stage.show();
-    }
-    @SuppressWarnings("unused")
-    static void main(String[] args) {
-        launch();
     }
 }

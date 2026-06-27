@@ -1,7 +1,10 @@
 package hr.terraforming.mars.terraformingmars.network;
 
 import hr.terraforming.mars.terraformingmars.enums.PlayerType;
-import hr.terraforming.mars.terraformingmars.model.*;
+import hr.terraforming.mars.terraformingmars.model.ApplicationConfiguration;
+import hr.terraforming.mars.terraformingmars.model.GameBoard;
+import hr.terraforming.mars.terraformingmars.model.GameManager;
+import hr.terraforming.mars.terraformingmars.model.GameState;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
