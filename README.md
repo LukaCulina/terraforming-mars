@@ -18,19 +18,17 @@ It’s built with Java 17+, using Apache Maven for building and dependency manag
 
 
 
-## Configuration Setup
+## Configuration
 
-Before running the project, you need to set up the external configuration file that the JNDI `ConfigurationReader` expects: 
+The game uses an application.properties file for configuration.
 
-### Step 1: Create configuration directory
+Location:
+- The file is located in src/main/resources/hr/terraforming/mars/terraformingmars/application.properties.
 
-- Open File Explorer and navigate to your `C:\` drive  
-- Create a new folder named `conf`  
+Customization:
+- You can modify the configuration directly in the source file. No external folders or absolute paths on your hard drive are required.
 
-### Step 2: Create `application.properties`
-
-- Inside `C:\conf\`, create a new file named `application.properties`  
-- Open it with any text editor and paste the following:
+Default configuration:
 
 ```properties
 rmi.port=1099
