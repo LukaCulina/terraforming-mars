@@ -7,17 +7,18 @@ import javafx.beans.binding.DoubleBinding;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.*;
 
 public final class CardViewBuilder {
 
+    private static final double BASE_CARD_WIDTH = 180.0;
+    private static final double BASE_CARD_HEIGHT = 250.0;
+    private static final double MAX_SCALE = 1.0;
+
     private CardViewBuilder() {
         throw new IllegalStateException("Utility class");
     }
-
-    private static final double BASE_CARD_WIDTH = 160.0;
-    private static final double BASE_CARD_HEIGHT = 220.0;
-    private static final double MAX_SCALE = 1.0;
 
     public static void setupCardTilePane(TilePane tilePane, int minColumns, int maxColumns) {
         tilePane.setHgap(15);
@@ -82,6 +83,7 @@ public final class CardViewBuilder {
         costLabel.getStyleClass().add("card-cost-label");
 
         Label nameLabel = new Label(card.getName());
+        nameLabel.setWrapText(true);
         nameLabel.getStyleClass().add("card-name-label");
 
         HBox tagBox = new HBox(5);
@@ -110,6 +112,18 @@ public final class CardViewBuilder {
         vpContainer.setManaged(card.getVictoryPoints() > 0);
 
         cardBox.getChildren().add(vpContainer);
+
+        String tooltipText = card.getName() + "\n\n" + card.getDescription();
+
+        Tooltip tooltip = new Tooltip(tooltipText);
+
+        tooltip.setPrefWidth(250);
+        tooltip.setWrapText(true);
+
+        tooltip.setShowDelay(javafx.util.Duration.millis(100));
+        tooltip.setShowDuration(javafx.util.Duration.INDEFINITE);
+
+        Tooltip.install(cardBox, tooltip);
 
         return cardBox;
     }
