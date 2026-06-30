@@ -23,7 +23,7 @@
 
 .corporation-name {
     -fx-font-family: "Arial Black", sans-serif;
-    -fx-font-size: 18px;
+    -fx-font-size: 1.3em;
     -fx-text-fill: #FFA500;
     -fx-padding-bottom: 5px;
     -fx-border-color: #FFA500;
@@ -31,18 +31,18 @@
 }
 
 .section-title {
-    -fx-font-size: 22px;
+    -fx-font-size: 1.6em;
     -fx-font-weight: bold;
     -fx-text-fill: #B0C4DE;
 }
 
 .corporation-card .label {
     -fx-text-fill: #EAEAEA;
-    -fx-font-size: 13px;
+    -fx-font-size: 0.95em;
 }
 
 .ability-text {
-    -fx-font-size: 18px;
+    -fx-font-size: 1.3em;
     -fx-text-fill: #B0C4DE;
 }
 
@@ -50,7 +50,7 @@
     -fx-background-color: #28a745;
     -fx-text-fill: white;
     -fx-font-weight: bold;
-    -fx-font-size: 14px;
+    -fx-font-size: 1em;
     -fx-background-radius: 20px;
     -fx-padding: 8px 16px;
     -fx-cursor: hand;
@@ -100,22 +100,23 @@
 
 .card-cost-label {
     -fx-font-weight: bold;
-    -fx-font-size: 1.2em;
+    -fx-font-size: 13px;
     -fx-text-fill: #1a2026;
     -fx-background-color: #FFA500;
-    -fx-padding: 4 10;
+    -fx-padding: 3 9;
     -fx-background-radius: 50;
     -fx-border-radius: 50;
 }
 
 .card-name-label {
-    -fx-font-size: 1em;
+    -fx-font-size: 14px;
     -fx-font-weight: bold;
     -fx-text-fill: #EAEAEA;
+    -fx-text-alignment: center;
 }
 
 .card-description-label {
-    -fx-font-size: 0.9em;
+    -fx-font-size: 12px;
     -fx-text-fill: #EAEAEA;
     -fx-text-alignment: center;
 }
@@ -141,7 +142,7 @@
 
 .main-title {
     -fx-font-family: "Arial Black", sans-serif;
-    -fx-font-size: 24px;
+    -fx-font-size: 1.7em;
     -fx-text-fill: #EAEAEA;
     -fx-padding-bottom: 48px;
 }
@@ -155,18 +156,18 @@
 }
 
 .player-button {
-    -fx-font-size: 24px;
+    -fx-font-size: 1.7em;
     -fx-font-weight: bold;
     -fx-background-radius: 10px;
     -fx-text-fill: white;
     -fx-padding: 15px 35px;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 8, 0, 0, 4);
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.3), 8, 0, 0, 4);
     -fx-cursor: hand;
     -fx-transition: -fx-background-color 0.2s;
 }
 
 .player-select-button {
-    -fx-font-size: 18px;
+    -fx-font-size: 1.3em;
     -fx-font-weight: bold;
     -fx-background-color: #4f4f4f;
     -fx-background-radius: 10px;
@@ -179,7 +180,7 @@
 }
 
 .player-button-active {
-    -fx-font-size: 22px;
+    -fx-font-size: 1.6em;
     -fx-background-color: #75152d;
     -fx-effect: dropshadow(gaussian, rgba(255, 215, 0, 0.7), 15, 0, 0, 0);
 }
@@ -190,38 +191,59 @@
     -fx-border-radius: 5;
 }
 
-#button-2 { -fx-background-color: #3498db; }
-#button-2:hover { -fx-background-color: #5dade2; }
+#button-2 {
+    -fx-background-color: #3498db;
+}
 
-#button-3 { -fx-background-color: #e67e22; }
-#button-3:hover { -fx-background-color: #f39c12; }
+#button-2:hover {
+    -fx-background-color: #5dade2;
+}
 
-#button-4 { -fx-background-color: #2ecc71; }
-#button-4:hover { -fx-background-color: #58d68d; }
+#button-3 {
+    -fx-background-color: #e67e22;
+}
 
-#button-5 { -fx-background-color: #9b59b6; }
-#button-5:hover { -fx-background-color: #af7ac5; }
+#button-3:hover {
+    -fx-background-color: #f39c12;
+}
+
+#button-4 {
+    -fx-background-color: #2ecc71;
+}
+
+#button-4:hover {
+    -fx-background-color: #58d68d;
+}
+
+#button-5 {
+    -fx-background-color: #9b59b6;
+}
+
+#button-5:hover {
+    -fx-background-color: #af7ac5;
+}
 
 .remaining-button {
     -fx-text-fill: white;
     -fx-font-weight: bold;
-    -fx-font-size: 20;
+    -fx-font-size: 1.4em;
 }
+
 .start-title {
     -fx-text-fill: white;
     -fx-font-weight: bold;
-    -fx-font-size: 40;
+    -fx-font-size: 2.8em;
 }
 
 .confirm-button {
     -fx-background-color: #28a745;
     -fx-text-fill: white;
-    -fx-font-size: 18px;
+    -fx-font-size: 1.3em;
     -fx-font-weight: bold;
     -fx-background-radius: 15px;
     -fx-padding: 15px 30px;
     -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0, 0, 2);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0, 0, 2);
 }
 
 .confirm-button:hover {
@@ -233,12 +255,12 @@
 .back-button {
     -fx-background-color: #a7288a;
     -fx-text-fill: white;
-    -fx-font-size: 18px;
+    -fx-font-size: 1.3em;
     -fx-font-weight: bold;
     -fx-background-radius: 15px;
     -fx-padding: 15px 30px;
     -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0, 0, 2);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0, 0, 2);
 }
 
 .back-button:hover {
@@ -252,7 +274,7 @@
     -fx-background-color: grey;
     -fx-background-insets: 0;
     -fx-border-radius: 0;
-    -fx-effect: innershadow(three-pass-box, rgba(0,0,0,0.4), 5, 0, 0, 1);
+    -fx-effect: innershadow(three-pass-box, rgba(0, 0, 0, 0.4), 5, 0, 0, 1);
 }
 
 /* Oxygen meter */
@@ -284,23 +306,23 @@
     -fx-min-width: 100px;
     -fx-min-height: 100px;
     -fx-alignment: center;
-    -fx-effect: innershadow(three-pass-box, rgba(0,0,0,0.4), 5, 0, 0, 1);
+    -fx-effect: innershadow(three-pass-box, rgba(0, 0, 0, 0.4), 5, 0, 0, 1);
 }
 
 .meter-text {
-    -fx-font-size: 24px;
+    -fx-font-size: 1.7em;
     -fx-font-weight: bold;
     -fx-text-fill: white;
 }
 
 .generation-phase-label {
-    -fx-font-size: 20px;
+    -fx-font-size: 1.4em;
     -fx-font-weight: bold;
     -fx-text-fill: white;
 }
 
 .resource-text {
-    -fx-font-size: 18px;
+    -fx-font-size: 1.1em;
     -fx-text-fill: white;
 }
 
@@ -311,7 +333,7 @@
 }
 
 .player-number-label {
-    -fx-font-size: 16px;
+    -fx-font-size: 1.1em;
     -fx-font-weight: bold;
 }
 
@@ -320,7 +342,7 @@
 }
 
 .project-button {
-    -fx-font-size: 14px;
+    -fx-font-size: 1em;
     -fx-background-radius: 8;
     -fx-alignment: CENTER_LEFT;
     -fx-padding: 5 10 5 5;
@@ -328,7 +350,7 @@
 }
 
 .milestone-button {
-    -fx-font-size: 14px;
+    -fx-font-size: 1em;
     -fx-background-radius: 8;
     -fx-alignment: CENTER;
     -fx-padding: 5 10 5 5;
@@ -336,7 +358,7 @@
 }
 
 .convert-button {
-    -fx-font-size: 14px;
+    -fx-font-size: 1em;
     -fx-background-radius: 8;
     -fx-alignment: CENTER;
     -fx-padding: 5 10 5 5;
@@ -348,7 +370,7 @@
 }
 
 .card-buttons {
-    -fx-font-size: 16px;
+    -fx-font-size: 1.1em;
     -fx-background-color: #2c3e50;
     -fx-border-color: #2c3e50;
     -fx-border-width: 2px;
@@ -371,7 +393,7 @@
     -fx-border-color: #4B5563;
     -fx-border-width: 1px;
     -fx-padding: 10px;
-    -fx-effect: innershadow(gaussian, rgba(0,0,0,0.4), 10, 0, 0, 2);
+    -fx-effect: innershadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0, 0, 2);
 }
 
 .cards-scroll-pane {
@@ -390,17 +412,17 @@
 }
 
 .vp-label {
-    -fx-font-size: 1.5em;
+    -fx-font-size: 1.2em;
     -fx-font-weight: bold;
     -fx-text-fill: white;
     -fx-background-color: #8B4513;
-    -fx-padding: 4px 13px;
+    -fx-padding: 3px 10px;
     -fx-background-radius: 10px;
 }
 
 .tag-text-label {
     -fx-font-weight: bold;
-    -fx-font-size: 18px;
+    -fx-font-size: 1.3em;
     -fx-text-fill: white;
 }
 
@@ -447,7 +469,7 @@
 .project-milestone {
     -fx-font-weight: bold;
     -fx-text-fill: white;
-    -fx-font-size: 16px;
+    -fx-font-size: 1.1em;
     -fx-text-alignment: center;
 }
 
@@ -457,7 +479,7 @@
 
 .last-move-label {
     -fx-text-fill: white;
-    -fx-font-size: 16px;
+    -fx-font-size: 1.1em;
 }
 
 .pass-button {
@@ -521,12 +543,12 @@
 .cancel-sale {
     -fx-background-color: #e74c3c;
     -fx-text-fill: white;
-    -fx-font-size: 18px;
+    -fx-font-size: 1.3em;
     -fx-font-weight: bold;
     -fx-background-radius: 15px;
     -fx-padding: 15px 30px;
     -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0, 0, 2);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0, 0, 2);
 }
 
 /* Production phase */
@@ -552,7 +574,7 @@
 
 /* FinalGreenery */
 .info-label {
-    -fx-font-size: 18px;
+    -fx-font-size: 1.3em;
     -fx-text-fill: white;
 }
 
@@ -563,13 +585,13 @@
 }
 
 .player-name-label {
-    -fx-font-size: 22px;
+    -fx-font-size: 1.6em;
     -fx-font-weight: bold;
     -fx-text-fill: #FFA500;
 }
 
 .details-label {
-    -fx-font-size: 16px;
+    -fx-font-size: 1.1em;
     -fx-text-fill: #B0C4DE;
 }
 
@@ -597,14 +619,14 @@
 }
 
 .header-label {
-    -fx-font-size: 18px;
+    -fx-font-size: 1.3em;
     -fx-font-weight: bold;
     -fx-text-fill: #FFA500;
     -fx-alignment: CENTER;
 }
 
 .normal-label {
-    -fx-font-size: 16px;
+    -fx-font-size: 1.1em;
     -fx-text-fill: white;
     -fx-alignment: CENTER;
 }
@@ -613,7 +635,7 @@
 .text-input {
     -fx-background-color: #2c2c2c;
     -fx-text-fill: white;
-    -fx-font-size: 14px;
+    -fx-font-size: 1em;
     -fx-padding: 10;
     -fx-border-color: #444444;
     -fx-border-width: 2px;
@@ -623,13 +645,13 @@
 
 .input-label {
     -fx-text-fill: white;
-    -fx-font-size: 14px;
+    -fx-font-size: 1em;
     -fx-font-weight: bold;
 }
 
 .status-label {
     -fx-text-fill: white;
-    -fx-font-size: 18px;
+    -fx-font-size: 1.3em;
     -fx-padding: 10;
 }
 
@@ -643,24 +665,24 @@
 
 .waiting-text {
     -fx-text-fill: #ffcc00;
-    -fx-font-size: 20px;
+    -fx-font-size: 1.4em;
 }
 
 .tooltip {
-    -fx-font-size: 12px;
+    -fx-font-size: 0.85em;
 }
 
 .icon {
-    -fx-font-size: 20px;
+    -fx-font-size: 1.4em;
 }
 
 .send-chat {
     -fx-background-color: #28a745;
     -fx-text-fill: white;
-    -fx-font-size: 14px;
+    -fx-font-size: 1em;
     -fx-font-weight: bold;
     -fx-background-radius: 10px;
     -fx-padding: 10px 25px;
     -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0, 0, 2);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0, 0, 2);
 }
