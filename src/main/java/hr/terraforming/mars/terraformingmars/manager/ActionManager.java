@@ -1,9 +1,12 @@
 package hr.terraforming.mars.terraformingmars.manager;
 
-import hr.terraforming.mars.terraformingmars.controller.game.SellPatentsController;
 import hr.terraforming.mars.terraformingmars.controller.game.GameScreenController;
+import hr.terraforming.mars.terraformingmars.controller.game.SellPatentsController;
 import hr.terraforming.mars.terraformingmars.enums.*;
-import hr.terraforming.mars.terraformingmars.model.*;
+import hr.terraforming.mars.terraformingmars.model.ApplicationConfiguration;
+import hr.terraforming.mars.terraformingmars.model.Card;
+import hr.terraforming.mars.terraformingmars.model.GameManager;
+import hr.terraforming.mars.terraformingmars.model.GameMove;
 import hr.terraforming.mars.terraformingmars.thread.SaveNewGameMoveThread;
 import hr.terraforming.mars.terraformingmars.util.ScreenUtils;
 import hr.terraforming.mars.terraformingmars.util.XmlUtils;
@@ -13,6 +16,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -32,7 +36,7 @@ public class ActionManager {
                          GameFlowManager gameFlowManager) {
         this.controller = controller;
         this.gameFlowManager = gameFlowManager;
-        this.gameMoveManager = new GameMoveManager( this);
+        this.gameMoveManager = new GameMoveManager(this);
         this.executionManager = new ExecutionManager(controller, this, gameFlowManager);
         ProductionPhaseManager productionPhaseManager = new ProductionPhaseManager(
                 controller,
@@ -77,7 +81,8 @@ public class ActionManager {
                     } catch (InterruptedException _) {
                         Thread.currentThread().interrupt();
                     }
-                    executionManager.handlePassTurn(true);                });
+                    executionManager.handlePassTurn(true);
+                });
             } else {
                 log.info("Skipping auto-pass - phase: {}", getGameManager().getCurrentPhase());
             }
@@ -124,7 +129,7 @@ public class ActionManager {
                     getGameManager().getCurrentPlayer().getName(),
                     ActionType.OPEN_SELL_PATENTS_MODAL,
                     cardNames,
-                    LocalDateTime.now()
+                    LocalDateTime.now(ZoneOffset.UTC)
             );
 
             saveMove(showModal);
@@ -134,7 +139,7 @@ public class ActionManager {
                     ActionType.SELL_PATENTS,
                     cardNames,
                     message,
-                    LocalDateTime.now()
+                    LocalDateTime.now(ZoneOffset.UTC)
             );
 
             performAction();

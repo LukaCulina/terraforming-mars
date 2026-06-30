@@ -9,18 +9,18 @@ import hr.terraforming.mars.terraformingmars.service.PlacementService;
 import javafx.application.Platform;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 @Slf4j
 public class PlacementManager {
-    private GameMove moveInProgress;
-
     private final GameScreenController gameScreenController;
     private final GameBoard gameBoard;
     private final GameManager gameManager;
     private final ActionManager actionManager;
     private final FinalGreeneryCoordinator finalGreeneryCoordinator;
-
+    private GameMove moveInProgress;
     private PlacementMode placementMode = PlacementMode.NONE;
     private StandardProject projectToPlace = null;
     private Card cardToPlace = null;
@@ -129,7 +129,7 @@ public class PlacementManager {
                 tile.getRow(),
                 tile.getCol(),
                 tileTypeToPlace,
-                LocalDateTime.now()
+                LocalDateTime.now(ZoneOffset.UTC)
         );
 
         actionManager.saveMove(placeTileMove);

@@ -8,16 +8,16 @@ import hr.terraforming.mars.terraformingmars.service.CostService;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 @Slf4j
 public class ExecutionManager {
 
+    private static final int MILESTONE_COST = 8;
+    private static final int CONVERSION_COST = 8;
     private final GameScreenController controller;
     private final ActionManager actionManager;
     private final GameFlowManager gameFlowManager;
-
-    private static final int MILESTONE_COST = 8;
-    private static final int CONVERSION_COST = 8;
 
     public ExecutionManager(GameScreenController controller, ActionManager actionManager, GameFlowManager gameFlowManager) {
         this.controller = controller;
@@ -49,7 +49,7 @@ public class ExecutionManager {
 
         ActionType actionType = isAutoPass ? ActionType.AUTO_PASS : ActionType.PASS_TURN;
         String message = isAutoPass ? "auto-passed after 2 actions" : "passed their turn";
-        GameMove move = new GameMove(currentPlayerName, actionType, "", message, LocalDateTime.now()
+        GameMove move = new GameMove(currentPlayerName, actionType, "", message, LocalDateTime.now(ZoneOffset.UTC)
         );
         actionManager.saveMove(move);
 
@@ -82,7 +82,7 @@ public class ExecutionManager {
         }
 
         GameMove move = new GameMove(currentPlayer.getName(), ActionType.PLAY_CARD, card.getName()
-                , "played card: " + card.getName(), LocalDateTime.now());
+                , "played card: " + card.getName(), LocalDateTime.now(ZoneOffset.UTC));
 
         if (card.getTileToPlace() != null) {
             if (isLocalPlayerMove(currentPlayer)) {
@@ -104,7 +104,7 @@ public class ExecutionManager {
             currentPlayer.canSpendMC(MILESTONE_COST);
             actionManager.performAction();
             GameMove move = new GameMove(currentPlayer.getName(), ActionType.CLAIM_MILESTONE, milestone.name(),
-                    "claimed milestone: " + milestone.name(), LocalDateTime.now());
+                    "claimed milestone: " + milestone.name(), LocalDateTime.now(ZoneOffset.UTC));
             actionManager.saveMove(move);
         } else {
             log.warn("Failed attempt by {} to claim milestone '{}'.",
@@ -124,7 +124,7 @@ public class ExecutionManager {
         }
 
         GameMove move = new GameMove(getGameManager().getCurrentPlayer().getName(),
-                ActionType.USE_STANDARD_PROJECT, project.name(), "used standard project: " + project.name(), LocalDateTime.now());
+                ActionType.USE_STANDARD_PROJECT, project.name(), "used standard project: " + project.name(), LocalDateTime.now(ZoneOffset.UTC));
 
         if (project.requiresTilePlacement()) {
             if (isLocalPlayerMove(currentPlayer)) {
@@ -169,7 +169,7 @@ public class ExecutionManager {
                 ActionType.CONVERT_HEAT,
                 "",
                 "raised the temperature",
-                LocalDateTime.now());
+                LocalDateTime.now(ZoneOffset.UTC));
 
         actionManager.saveMove(move);
     }
@@ -187,7 +187,7 @@ public class ExecutionManager {
                 ActionType.CONVERT_PLANTS,
                 "",
                 "converted " + requiredPlants + " plants to greenery",
-                LocalDateTime.now()
+                LocalDateTime.now(ZoneOffset.UTC)
         );
 
         if (isLocalPlayerMove(currentPlayer)) {

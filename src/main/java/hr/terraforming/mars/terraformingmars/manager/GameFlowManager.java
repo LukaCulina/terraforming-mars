@@ -11,7 +11,9 @@ import javafx.application.Platform;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +25,8 @@ public class GameFlowManager {
     private final GameScreenController controller;
     @Getter
     private FinalGreeneryPhaseManager finalGreeneryManager;
-    @Getter @Setter
+    @Getter
+    @Setter
     private ProductionPhaseManager productionPhaseManager;
 
     public GameFlowManager(GameScreenController controller) {
@@ -59,8 +62,7 @@ public class GameFlowManager {
                     this::finishGame
             );
             finalGreeneryManager.start();
-        }
-        else {
+        } else {
             if (productionPhaseManager != null) {
                 productionPhaseManager.reset();
                 productionPhaseManager.showProductionPhaseScreen();
@@ -110,7 +112,7 @@ public class GameFlowManager {
         log.info("First player changed: {} → {}", previousFirstPlayer.getName(), newFirstPlayer.getName());
 
         GameMove playerOrderMove = new GameMove(SYSTEM, ActionType.PLAYER_ORDER, newFirstPlayer.getName(),
-                "First player is now " + newFirstPlayer.getName(), LocalDateTime.now()
+                "First player is now " + newFirstPlayer.getName(), LocalDateTime.now(ZoneOffset.UTC)
         );
         XmlUtils.appendGameMove(playerOrderMove);
     }
@@ -157,7 +159,7 @@ public class GameFlowManager {
 
     private void saveProductionPhaseForReplay(int generation) {
         GameMove productionMove = new GameMove(SYSTEM, ActionType.OPEN_PRODUCTION_PHASE_MODAL, String.valueOf(generation),
-                "Production Phase - Generation " + generation, LocalDateTime.now()
+                "Production Phase - Generation " + generation, LocalDateTime.now(ZoneOffset.UTC)
         );
 
         XmlUtils.appendGameMove(productionMove);
@@ -175,7 +177,7 @@ public class GameFlowManager {
 
         String jsonDetails = new com.google.gson.Gson().toJson(researchData);
 
-        GameMove researchMove = new GameMove(SYSTEM, ActionType.RESEARCH_COMPLETE, jsonDetails, LocalDateTime.now()
+        GameMove researchMove = new GameMove(SYSTEM, ActionType.RESEARCH_COMPLETE, jsonDetails, LocalDateTime.now(ZoneOffset.UTC)
         );
 
         XmlUtils.appendGameMove(researchMove);

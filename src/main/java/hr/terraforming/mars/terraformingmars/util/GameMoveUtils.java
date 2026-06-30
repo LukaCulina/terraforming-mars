@@ -13,19 +13,21 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.util.Duration;
 import lombok.extern.slf4j.Slf4j;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.*;
 
 @Slf4j
 public class GameMoveUtils {
 
+    private static final String GAME_MOVE_HISTORY_FILE_NAME = "gameMoves/moves.dat";
+
     private GameMoveUtils() {
         throw new IllegalStateException("Utility class");
     }
-
-    private static final String GAME_MOVE_HISTORY_FILE_NAME = "gameMoves/moves.dat";
 
     public static void saveNewGameMove(GameMove newGameMove) {
         List<GameMove> gameMoveList = loadAllGameMoves();
@@ -35,9 +37,9 @@ public class GameMoveUtils {
         File parentDir = file.getParentFile();
 
         if (parentDir != null && !parentDir.exists() && !parentDir.mkdirs()) {
-                log.error("Failed to create directory: {}", parentDir.getAbsolutePath());
-                return;
-            }
+            log.error("Failed to create directory: {}", parentDir.getAbsolutePath());
+            return;
+        }
 
         try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(file))) {
             outputStream.writeObject(gameMoveList);
@@ -138,7 +140,7 @@ public class GameMoveUtils {
                     "System",
                     ActionType.INITIAL_SETUP,
                     jsonDetails,
-                    LocalDateTime.now()
+                    LocalDateTime.now(ZoneOffset.UTC)
             );
 
             XmlUtils.appendGameMove(initialMove);

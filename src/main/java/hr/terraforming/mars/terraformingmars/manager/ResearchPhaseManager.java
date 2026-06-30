@@ -11,6 +11,7 @@ import javafx.stage.Window;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Collections;
 import java.util.List;
 
@@ -20,8 +21,8 @@ public class ResearchPhaseManager {
     private final GameManager gameManager;
     private final Window ownerWindow;
     private final Runnable onResearchComplete;
-    private int researchPlayerIndex = 0;
     private final GameScreenController controller;
+    private int researchPlayerIndex = 0;
 
     public ResearchPhaseManager(GameManager gameManager, Window ownerWindow, GameScreenController controller, Runnable onResearchComplete) {
         this.gameManager = gameManager;
@@ -75,7 +76,7 @@ public class ResearchPhaseManager {
         Player currentPlayer = gameManager.getPlayers().get(researchPlayerIndex);
 
         if (!boughtCards.isEmpty()) {
-            String cardNames = boughtCards.stream().map(Card::getName).reduce((a,b) -> a + ", " + b).orElse("");
+            String cardNames = boughtCards.stream().map(Card::getName).reduce((a, b) -> a + ", " + b).orElse("");
 
             int count = boughtCards.size();
             String card = (count == 1) ? "card" : "cards";
@@ -87,7 +88,7 @@ public class ResearchPhaseManager {
                     ActionType.OPEN_CHOOSE_CARDS_MODAL,
                     cardNames,
                     message,
-                    LocalDateTime.now()
+                    LocalDateTime.now(ZoneOffset.UTC)
             );
             controller.getActionManager().saveMove(modalMove);
         }

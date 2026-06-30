@@ -6,8 +6,8 @@ import hr.terraforming.mars.terraformingmars.enums.ActionType;
 import hr.terraforming.mars.terraformingmars.enums.PlayerType;
 import hr.terraforming.mars.terraformingmars.model.ApplicationConfiguration;
 import hr.terraforming.mars.terraformingmars.model.GameMove;
-import hr.terraforming.mars.terraformingmars.network.message.ProductionPhaseMessage;
 import hr.terraforming.mars.terraformingmars.model.ProductionReport;
+import hr.terraforming.mars.terraformingmars.network.message.ProductionPhaseMessage;
 import hr.terraforming.mars.terraformingmars.service.ProductionReportService;
 import hr.terraforming.mars.terraformingmars.util.ScreenUtils;
 import javafx.application.Platform;
@@ -15,7 +15,10 @@ import javafx.stage.Window;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.time.ZoneOffset;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Slf4j
 public class ProductionPhaseManager {
@@ -95,7 +98,7 @@ public class ProductionPhaseManager {
                 ActionType.FINISH_PRODUCTION_PHASE,
                 "",
                 "started a new generation",
-                LocalDateTime.now()
+                LocalDateTime.now(ZoneOffset.UTC)
         );
         actionManager.saveMove(continueMove);
         log.debug("'{}' continued to research phase", myName);

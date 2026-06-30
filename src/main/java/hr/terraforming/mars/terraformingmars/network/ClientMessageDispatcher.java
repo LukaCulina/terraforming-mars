@@ -15,6 +15,7 @@ import javafx.application.Platform;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 
 @Slf4j
@@ -177,7 +178,7 @@ public record ClientMessageDispatcher(GameClientThread client, List<GameStateLis
                 playerName,
                 ActionType.FINISH_FINAL_GREENERY,
                 "Final Greenery Complete",
-                LocalDateTime.now()
+                LocalDateTime.now(ZoneOffset.UTC)
         );
         client.sendMove(completionMove);
     }
