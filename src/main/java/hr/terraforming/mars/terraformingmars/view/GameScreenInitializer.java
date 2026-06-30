@@ -6,7 +6,10 @@ import hr.terraforming.mars.terraformingmars.manager.GameScreenManager;
 import hr.terraforming.mars.terraformingmars.view.component.ActionPanelComponents;
 import hr.terraforming.mars.terraformingmars.view.component.GlobalStatusComponents;
 import hr.terraforming.mars.terraformingmars.view.component.PlayerControlComponents;
-import javafx.scene.layout.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 
 public class GameScreenInitializer {
 
@@ -54,7 +57,6 @@ public class GameScreenInitializer {
 
         initializeComponents(controller, actionManager, actionPanel, controls);
         initializeBindings(controller, statusComponents, actionPanel, controls);
-        initializeResponsiveFonts(controller.gameBoardPane);
 
         return gameScreen;
     }
@@ -106,14 +108,5 @@ public class GameScreenInitializer {
                 .bind(bottomGrid.widthProperty().multiply(0.15));
         globalStatus.oceansLabel().prefHeightProperty()
                 .bind(globalStatus.oceansLabel().prefWidthProperty());
-    }
-
-    private static void initializeResponsiveFonts(BorderPane gameBoardPane) {
-        ScreenResizer.attachFontResizeListeners(gameBoardPane, () ->
-                ScreenResizer.updateFonts(gameBoardPane,
-                        new ScreenResizer.FontMapping(".convert-button", 0.015),
-                        new ScreenResizer.FontMapping(".project-milestone", 0.025)
-                )
-        );
     }
 }

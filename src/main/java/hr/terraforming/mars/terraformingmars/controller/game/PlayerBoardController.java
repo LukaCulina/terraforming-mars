@@ -7,55 +7,58 @@ import hr.terraforming.mars.terraformingmars.manager.ActionManager;
 import hr.terraforming.mars.terraformingmars.model.ApplicationConfiguration;
 import hr.terraforming.mars.terraformingmars.model.Card;
 import hr.terraforming.mars.terraformingmars.model.Player;
-import hr.terraforming.mars.terraformingmars.view.ScreenResizer;
 import hr.terraforming.mars.terraformingmars.view.CardViewBuilder;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
+
 import java.util.EnumSet;
 import java.util.List;
 
 public class PlayerBoardController {
-
-    @FXML private VBox playerBoard;
-    @FXML private Label corporationLabel;
-    @FXML private Label trLabel;
-    @FXML private Label mcLabel;
-    @FXML private Label steelLabel;
-    @FXML private Label titaniumLabel;
-    @FXML private Label plantsLabel;
-    @FXML private Label energyLabel;
-    @FXML private Label heatLabel;
-    @FXML private Label mcProductionLabel;
-    @FXML private Label steelProductionLabel;
-    @FXML private Label titaniumProductionLabel;
-    @FXML private Label plantsProductionLabel;
-    @FXML private Label energyProductionLabel;
-    @FXML private Label heatProductionLabel;
-    @FXML private FlowPane tagsLegendPane;
-    @FXML private VBox handContainer;
-    @FXML private TilePane cardsDisplayArea;
-    @FXML private Button showHandButton;
-    @FXML private Button showPlayedButton;
+    
+    @FXML
+    private Label corporationLabel;
+    @FXML
+    private Label trLabel;
+    @FXML
+    private Label mcLabel;
+    @FXML
+    private Label steelLabel;
+    @FXML
+    private Label titaniumLabel;
+    @FXML
+    private Label plantsLabel;
+    @FXML
+    private Label energyLabel;
+    @FXML
+    private Label heatLabel;
+    @FXML
+    private Label mcProductionLabel;
+    @FXML
+    private Label steelProductionLabel;
+    @FXML
+    private Label titaniumProductionLabel;
+    @FXML
+    private Label plantsProductionLabel;
+    @FXML
+    private Label energyProductionLabel;
+    @FXML
+    private Label heatProductionLabel;
+    @FXML
+    private FlowPane tagsLegendPane;
+    @FXML
+    private VBox handContainer;
+    @FXML
+    private TilePane cardsDisplayArea;
+    @FXML
+    private Button showHandButton;
+    @FXML
+    private Button showPlayedButton;
     private Player player;
     private boolean isShowingHand = true;
-
-    @FXML
-    public void initialize() {
-        ScreenResizer.attachFontResizeListeners(playerBoard, this::updateFontSizes);
-    }
-
-    private void updateFontSizes() {
-        ScreenResizer.updateFonts(
-                playerBoard,
-                new ScreenResizer.FontMapping(".meter-text", 0.035),
-                new ScreenResizer.FontMapping(".resource-text", 0.03),
-                new ScreenResizer.FontMapping(".tag-text-label", 0.025),
-                new ScreenResizer.FontMapping(".card-buttons", 0.03)
-        );
-    }
 
     public void setPlayer(Player player, ActionManager actionManager) {
         this.player = player;

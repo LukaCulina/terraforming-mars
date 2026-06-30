@@ -1,72 +1,80 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.control.Button?>
 <?import javafx.geometry.Insets?>
-
-<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox xmlns:fx="http://javafx.com/fxml" xmlns="http://javafx.com/javafx"
       fx:controller="hr.terraforming.mars.terraformingmars.controller.game.PlayerBoardController"
-      fx:id="playerBoard" alignment="TOP_CENTER" spacing="10.0">
+      alignment="TOP_CENTER" spacing="10.0">
 
     <padding>
-        <Insets top="10.0" right="15.0" bottom="10.0" left="15.0" />
+        <Insets top="10.0" right="15.0" bottom="10.0" left="15.0"/>
     </padding>
 
     <HBox alignment="CENTER" prefHeight="40.0">
-        <Label fx:id="corporationLabel" styleClass="meter-text" />
+        <Label fx:id="corporationLabel" styleClass="meter-text"/>
 
-        <Region HBox.hgrow="ALWAYS" />
+        <Region HBox.hgrow="ALWAYS"/>
 
-        <Label fx:id="trLabel" styleClass="meter-text" text="TR: 20" />
+        <Label fx:id="trLabel" styleClass="meter-text" text="TR: 20"/>
     </HBox>
 
     <VBox styleClass="player-vbox" spacing="10.0" alignment="CENTER">
         <VBox.margin>
-            <Insets top="20" />
+            <Insets top="20"/>
         </VBox.margin>
 
         <Label styleClass="meter-text" text="Resources &amp; Production"/>
         <GridPane hgap="10.0" vgap="5.0">
             <columnConstraints>
-                <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" />
-                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
-                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
-                <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" />
-                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
-                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
+                <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES"/>
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES"/>
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES"/>
+                <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES"/>
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES"/>
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES"/>
             </columnConstraints>
             <rowConstraints>
-                <RowConstraints />
-                <RowConstraints />
-                <RowConstraints />
-                <RowConstraints />
+                <RowConstraints/>
+                <RowConstraints/>
+                <RowConstraints/>
+                <RowConstraints/>
             </rowConstraints>
 
-            <Label styleClass="resource-text" text="Available" GridPane.columnIndex="1" />
-            <Label styleClass="resource-text" text="Production" GridPane.columnIndex="2" />
-            <Label styleClass="resource-text" text="Available" GridPane.columnIndex="4" />
-            <Label styleClass="resource-text" text="Production" GridPane.columnIndex="5" />
+            <Label styleClass="resource-text" text="Available" GridPane.columnIndex="1"/>
+            <Label styleClass="resource-text" text="Production" GridPane.columnIndex="2"/>
+            <Label styleClass="resource-text" text="Available" GridPane.columnIndex="4"/>
+            <Label styleClass="resource-text" text="Production" GridPane.columnIndex="5"/>
 
-            <Label styleClass="resource-text" text="MC" GridPane.rowIndex="1" />
-            <Label styleClass="resource-text" fx:id="mcLabel" text="0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Label styleClass="resource-text" fx:id="mcProductionLabel" text="0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-            <Label styleClass="resource-text" text="Steel" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-            <Label styleClass="resource-text" fx:id="steelLabel" text="0" GridPane.columnIndex="4" GridPane.rowIndex="1" />
-            <Label styleClass="resource-text" fx:id="steelProductionLabel" text="0" GridPane.columnIndex="5" GridPane.rowIndex="1" />
-            <Label styleClass="resource-text" text="Titanium" GridPane.rowIndex="2" />
-            <Label styleClass="resource-text" fx:id="titaniumLabel" text="0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <Label styleClass="resource-text" fx:id="titaniumProductionLabel" text="0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-            <Label styleClass="resource-text" text="Plants" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-            <Label styleClass="resource-text" fx:id="plantsLabel" text="0" GridPane.columnIndex="4" GridPane.rowIndex="2" />
-            <Label styleClass="resource-text" fx:id="plantsProductionLabel" text="0" GridPane.columnIndex="5" GridPane.rowIndex="2" />
-            <Label styleClass="resource-text" text="Energy" GridPane.rowIndex="3" />
-            <Label styleClass="resource-text" fx:id="energyLabel" text="0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <Label styleClass="resource-text" fx:id="energyProductionLabel" text="0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-            <Label styleClass="resource-text" text="Heat" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-            <Label styleClass="resource-text" fx:id="heatLabel" text="0" GridPane.columnIndex="4" GridPane.rowIndex="3" />
-            <Label styleClass="resource-text" fx:id="heatProductionLabel" text="0" GridPane.columnIndex="5" GridPane.rowIndex="3" />
+            <Label styleClass="resource-text" text="MC" GridPane.rowIndex="1"/>
+            <Label styleClass="resource-text" fx:id="mcLabel" text="0" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+            <Label styleClass="resource-text" fx:id="mcProductionLabel" text="0" GridPane.columnIndex="2"
+                   GridPane.rowIndex="1"/>
+            <Label styleClass="resource-text" text="Steel" GridPane.columnIndex="3" GridPane.rowIndex="1"/>
+            <Label styleClass="resource-text" fx:id="steelLabel" text="0" GridPane.columnIndex="4"
+                   GridPane.rowIndex="1"/>
+            <Label styleClass="resource-text" fx:id="steelProductionLabel" text="0" GridPane.columnIndex="5"
+                   GridPane.rowIndex="1"/>
+            <Label styleClass="resource-text" text="Titanium" GridPane.rowIndex="2"/>
+            <Label styleClass="resource-text" fx:id="titaniumLabel" text="0" GridPane.columnIndex="1"
+                   GridPane.rowIndex="2"/>
+            <Label styleClass="resource-text" fx:id="titaniumProductionLabel" text="0" GridPane.columnIndex="2"
+                   GridPane.rowIndex="2"/>
+            <Label styleClass="resource-text" text="Plants" GridPane.columnIndex="3" GridPane.rowIndex="2"/>
+            <Label styleClass="resource-text" fx:id="plantsLabel" text="0" GridPane.columnIndex="4"
+                   GridPane.rowIndex="2"/>
+            <Label styleClass="resource-text" fx:id="plantsProductionLabel" text="0" GridPane.columnIndex="5"
+                   GridPane.rowIndex="2"/>
+            <Label styleClass="resource-text" text="Energy" GridPane.rowIndex="3"/>
+            <Label styleClass="resource-text" fx:id="energyLabel" text="0" GridPane.columnIndex="1"
+                   GridPane.rowIndex="3"/>
+            <Label styleClass="resource-text" fx:id="energyProductionLabel" text="0" GridPane.columnIndex="2"
+                   GridPane.rowIndex="3"/>
+            <Label styleClass="resource-text" text="Heat" GridPane.columnIndex="3" GridPane.rowIndex="3"/>
+            <Label styleClass="resource-text" fx:id="heatLabel" text="0" GridPane.columnIndex="4"
+                   GridPane.rowIndex="3"/>
+            <Label styleClass="resource-text" fx:id="heatProductionLabel" text="0" GridPane.columnIndex="5"
+                   GridPane.rowIndex="3"/>
         </GridPane>
     </VBox>
 
@@ -75,18 +83,19 @@
         <FlowPane fx:id="tagsLegendPane" alignment="CENTER" hgap="15" vgap="5"/>
     </VBox>
 
-    <VBox fx:id="handContainer" spacing="5.0" VBox.vgrow="NEVER" alignment="TOP_CENTER" prefHeight="300" styleClass="cards-container">
+    <VBox fx:id="handContainer" spacing="5.0" VBox.vgrow="NEVER" alignment="TOP_CENTER" prefHeight="320"
+          styleClass="cards-container">
         <VBox.margin>
-            <Insets top="20" />
+            <Insets top="20"/>
         </VBox.margin>
 
         <HBox alignment="CENTER" spacing="10">
-            <Button styleClass="card-buttons" fx:id="showHandButton" text="Your Hand" />
-            <Button styleClass="card-buttons" fx:id="showPlayedButton" text="Played Cards" />
+            <Button styleClass="card-buttons" fx:id="showHandButton" text="Your Hand"/>
+            <Button styleClass="card-buttons" fx:id="showPlayedButton" text="Played Cards"/>
         </HBox>
 
         <ScrollPane fitToWidth="true" hbarPolicy="NEVER" VBox.vgrow="ALWAYS" styleClass="transparent-scroll-pane">
-            <TilePane fx:id="cardsDisplayArea" hgap="10" vgap="5" styleClass="cards-tile-pane" />
+            <TilePane fx:id="cardsDisplayArea" hgap="10" vgap="5" styleClass="cards-tile-pane"/>
         </ScrollPane>
     </VBox>
 </VBox>

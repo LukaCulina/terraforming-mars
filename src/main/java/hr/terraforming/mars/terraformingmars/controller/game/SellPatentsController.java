@@ -2,7 +2,6 @@ package hr.terraforming.mars.terraformingmars.controller.game;
 
 import hr.terraforming.mars.terraformingmars.model.Card;
 import hr.terraforming.mars.terraformingmars.model.Player;
-import hr.terraforming.mars.terraformingmars.view.ScreenResizer;
 import hr.terraforming.mars.terraformingmars.view.CardViewBuilder;
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
@@ -11,6 +10,8 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -18,46 +19,22 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
 
-import javafx.util.Duration;
-import lombok.extern.slf4j.Slf4j;
-
 @Slf4j
 public class SellPatentsController {
 
-    @FXML
-    private VBox sellPatentsScreen;
-
+    private static final String SELECTED_CARD_STYLE = "card-view-selected";
+    private final Set<Card> selectedCards = new HashSet<>();
+    
     @FXML
     private TilePane cardsForSalePane;
-
     @FXML
     private Label infoLabel;
-
     @FXML
     private Button confirmButton;
-
     @FXML
     private Button cancelButton;
-
     private Player player;
-    private final Set<Card> selectedCards = new HashSet<>();
     private Consumer<List<Card>> onSaleComplete;
-    private static final String SELECTED_CARD_STYLE = "card-view-selected";
-
-    @FXML
-    private void initialize() {
-        ScreenResizer.attachFontResizeListeners(sellPatentsScreen, this::updateFontSizes);
-    }
-
-    private void updateFontSizes() {
-        ScreenResizer.updateFonts(
-                sellPatentsScreen,
-                new ScreenResizer.FontMapping(".choose-label", 0.05),
-                new ScreenResizer.FontMapping(".info-label", 0.04),
-                new ScreenResizer.FontMapping(".confirm-button", 0.03),
-                new ScreenResizer.FontMapping(".cancel-sale", 0.03)
-        );
-    }
 
     public void setupForSale(Player player, Consumer<List<Card>> onSaleComplete) {
         this.player = player;

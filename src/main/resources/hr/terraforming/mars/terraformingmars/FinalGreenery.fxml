@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.HBox?>
-
-<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+<?import javafx.scene.layout.VBox?>
+<VBox xmlns:fx="http://javafx.com/fxml" xmlns="http://javafx.com/javafx"
       fx:controller="hr.terraforming.mars.terraformingmars.controller.game.FinalGreeneryController"
-      fx:id="finalGreeneryScreen" styleClass="choose-window" alignment="CENTER" spacing="20">
+      styleClass="choose-window" alignment="CENTER" spacing="20">
 
     <Label text="Final Greenery Conversion" styleClass="choose-label"/>
 
@@ -20,7 +18,9 @@
     </VBox>
 
     <HBox alignment="CENTER" spacing="30" styleClass="action-button-container">
-        <Button fx:id="convertButton" text="Place Greenery" onAction="#handleConvertGreenery" styleClass="confirm-button"/>
-        <Button fx:id="finishButton" text="Finish Conversion" onAction="#handleFinish" styleClass="player-button" id="button-2"/>
+        <Button fx:id="convertButton" text="Place Greenery" onAction="#handleConvertGreenery"
+                styleClass="confirm-button"/>
+        <Button fx:id="finishButton" text="Finish Conversion" onAction="#handleFinish" styleClass="player-button"
+                id="button-2"/>
     </HBox>
 </VBox>

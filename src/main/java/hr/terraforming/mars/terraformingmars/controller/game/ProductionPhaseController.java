@@ -1,7 +1,6 @@
 package hr.terraforming.mars.terraformingmars.controller.game;
 
 import hr.terraforming.mars.terraformingmars.model.ProductionReport;
-import hr.terraforming.mars.terraformingmars.view.ScreenResizer;
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -16,9 +15,6 @@ import java.util.List;
 public class ProductionPhaseController {
 
     @FXML
-    private VBox productionPhaseScreen;
-
-    @FXML
     private Label titleLabel;
 
     @FXML
@@ -29,20 +25,6 @@ public class ProductionPhaseController {
 
     @Setter
     private Runnable onContinueAction;
-
-    @FXML
-    public void initialize() {
-        ScreenResizer.attachFontResizeListeners(productionPhaseScreen, this::updateFontSizes);
-    }
-
-    private void updateFontSizes() {
-        ScreenResizer.updateFonts(
-                productionPhaseScreen,
-                new ScreenResizer.FontMapping(".main-title", 0.05),
-                new ScreenResizer.FontMapping(".player-header", 0.03),
-                new ScreenResizer.FontMapping(".resource-change-label", 0.025)
-        );
-    }
 
     public void loadProductionSummaries(List<ProductionReport> summaries, int generation) {
         titleLabel.setText("Production - Generation " + generation);

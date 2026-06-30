@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.TilePane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.layout.HBox?>
-
-<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+<VBox xmlns:fx="http://javafx.com/fxml" xmlns="http://javafx.com/javafx"
       fx:controller="hr.terraforming.mars.terraformingmars.controller.game.SellPatentsController"
-      fx:id="sellPatentsScreen" styleClass="choose-window" alignment="CENTER" spacing="15">
+      styleClass="choose-window" alignment="CENTER" spacing="15">
 
     <Label text="Select cards to sell (1 MC each)" styleClass="choose-label"/>
 

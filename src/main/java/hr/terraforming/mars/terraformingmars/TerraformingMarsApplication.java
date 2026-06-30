@@ -8,10 +8,10 @@ import hr.terraforming.mars.terraformingmars.view.ScreenNavigator;
 import javafx.application.Application;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 public class TerraformingMarsApplication extends Application {
+    private static final String FONT_SIZE = "-fx-font-size: ";
+
     @SuppressWarnings("unused")
     static void main(String[] args) {
         launch();
@@ -49,5 +49,24 @@ public class TerraformingMarsApplication extends Application {
         ScreenNavigator.showStartMenu();
 
         stage.show();
+
+        stage.sceneProperty().addListener((_, _, newScene) -> {
+            if (newScene != null) {
+                double fontSize = Math.max(10, stage.getWidth() * 0.007);
+                newScene.getRoot().setStyle(FONT_SIZE + fontSize + "px;");
+            }
+        });
+
+        stage.widthProperty().addListener((_, _, newVal) -> {
+            if (stage.getScene() != null) {
+                double fontSize = Math.max(10, newVal.doubleValue() * 0.007);
+                stage.getScene().getRoot().setStyle(FONT_SIZE + fontSize + "px;");
+            }
+        });
+
+        if (stage.getScene() != null) {
+            double fontSize = Math.max(10, stage.getWidth() * 0.007);
+            stage.getScene().getRoot().setStyle(FONT_SIZE + fontSize + "px;");
+        }
     }
 }

@@ -3,14 +3,12 @@ package hr.terraforming.mars.terraformingmars.controller.game;
 import hr.terraforming.mars.terraformingmars.enums.ResourceType;
 import hr.terraforming.mars.terraformingmars.model.GameManager;
 import hr.terraforming.mars.terraformingmars.model.Player;
-import hr.terraforming.mars.terraformingmars.view.ScreenResizer;
 import hr.terraforming.mars.terraformingmars.view.ScreenNavigator;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import lombok.extern.slf4j.Slf4j;
@@ -19,9 +17,6 @@ import java.util.List;
 
 @Slf4j
 public class FinalGreeneryController {
-
-    @FXML
-    private VBox finalGreeneryScreen;
 
     @FXML
     private Label playerNameLabel;
@@ -45,23 +40,6 @@ public class FinalGreeneryController {
     private GameScreenController gameScreenController;
     private Runnable onComplete;
     private Stage stage;
-
-    @FXML
-    public void initialize() {
-        ScreenResizer.attachFontResizeListeners(finalGreeneryScreen, this::updateFontSizes);
-    }
-
-    private void updateFontSizes() {
-        ScreenResizer.updateFonts(
-                finalGreeneryScreen,
-                new ScreenResizer.FontMapping(".choose-label", 0.05),
-                new ScreenResizer.FontMapping(".player-name-label", 0.04),
-                new ScreenResizer.FontMapping(".info-label", 0.04),
-                new ScreenResizer.FontMapping(".details-label", 0.035),
-                new ScreenResizer.FontMapping(".confirm-button", 0.03),
-                new ScreenResizer.FontMapping(".player-button", 0.03)
-        );
-    }
 
     public void setup(GameManager gameManager, GameScreenController gameScreenController) {
         this.players = gameManager.getPlayers();

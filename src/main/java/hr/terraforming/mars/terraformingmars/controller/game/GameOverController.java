@@ -4,14 +4,12 @@ import hr.terraforming.mars.terraformingmars.manager.GameSessionManager;
 import hr.terraforming.mars.terraformingmars.model.ApplicationConfiguration;
 import hr.terraforming.mars.terraformingmars.model.Card;
 import hr.terraforming.mars.terraformingmars.model.Player;
-import hr.terraforming.mars.terraformingmars.view.ScreenResizer;
 import hr.terraforming.mars.terraformingmars.util.DialogUtils;
 import hr.terraforming.mars.terraformingmars.view.ScreenNavigator;
+import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
-import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Comparator;
@@ -21,29 +19,10 @@ import java.util.List;
 public class GameOverController {
 
     @FXML
-    private VBox gameOverScreen;
-
-    @FXML
     private Label winnerLabel;
 
     @FXML
     private GridPane scoresGrid;
-
-    @FXML
-    public void initialize() {
-        ScreenResizer.attachFontResizeListeners(gameOverScreen, this::updateFontSizes);
-    }
-
-    private void updateFontSizes() {
-        ScreenResizer.updateFonts(
-                gameOverScreen,
-                new ScreenResizer.FontMapping(".main-title", 0.05),
-                new ScreenResizer.FontMapping(".choose-label", 0.035),
-                new ScreenResizer.FontMapping(".header-label", 0.03),
-                new ScreenResizer.FontMapping(".normal-label", 0.025),
-                new ScreenResizer.FontMapping(".confirm-button", 0.03)
-        );
-    }
 
     public void setFinalScores(List<Player> players) {
         players.sort(Comparator.comparingInt(Player::getFinalScore).reversed()
