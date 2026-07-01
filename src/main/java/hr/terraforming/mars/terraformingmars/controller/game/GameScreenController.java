@@ -1,15 +1,20 @@
 package hr.terraforming.mars.terraformingmars.controller.game;
 
-import hr.terraforming.mars.terraformingmars.coordinator.*;
-import hr.terraforming.mars.terraformingmars.replay.ReplayManager;
-import hr.terraforming.mars.terraformingmars.service.GameStateService;
-import hr.terraforming.mars.terraformingmars.view.PlayerBoardLoader;
-import hr.terraforming.mars.terraformingmars.util.*;
-import hr.terraforming.mars.terraformingmars.view.ScreenNavigator;
+import hr.terraforming.mars.terraformingmars.coordinator.GameScreenCoordinator;
+import hr.terraforming.mars.terraformingmars.coordinator.GameSetupCoordinator;
+import hr.terraforming.mars.terraformingmars.coordinator.NetworkCoordinator;
+import hr.terraforming.mars.terraformingmars.coordinator.ResponsiveLayoutCoordinator;
 import hr.terraforming.mars.terraformingmars.manager.*;
 import hr.terraforming.mars.terraformingmars.model.*;
-import javafx.animation.*;
-import javafx.fxml.*;
+import hr.terraforming.mars.terraformingmars.replay.ReplayManager;
+import hr.terraforming.mars.terraformingmars.service.GameStateService;
+import hr.terraforming.mars.terraformingmars.util.DialogUtils;
+import hr.terraforming.mars.terraformingmars.util.DocumentationUtils;
+import hr.terraforming.mars.terraformingmars.util.GameMoveUtils;
+import hr.terraforming.mars.terraformingmars.view.PlayerBoardLoader;
+import hr.terraforming.mars.terraformingmars.view.ScreenNavigator;
+import javafx.animation.Timeline;
+import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Window;
@@ -20,51 +25,105 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class GameScreenController {
 
-    @Getter
-    @FXML private AnchorPane hexBoardPane;
-    @Getter
-    @FXML public BorderPane gameBoardPane;
-    @FXML public StackPane temperaturePane;
-    @FXML public GridPane bottomGrid;
-    @FXML private VBox currentPlayerBoardContainer;
-    @FXML public HBox playerListBar;
-    @FXML public VBox standardProjectsBox;
-    @FXML public ProgressBar oxygenProgressBar;
-    @FXML public Label oxygenLabel;
-    @FXML public ProgressBar temperatureProgressBar;
-    @FXML public Label temperatureLabel;
-    @FXML public Label generationLabel;
-    @FXML public Label phaseLabel;
-    @FXML public Button passTurnButton;
-    @FXML public Button convertHeatButton;
-    @FXML public Button convertPlantsButton;
-    @FXML public Label oceansLabel;
-    @FXML public VBox milestonesBox;
-    @Getter
-    @FXML private Button cancelPlacementButton;
-    @FXML public BorderPane playerInterface;
-    @FXML private Label lastMoveLabel;
-    @Getter
-    @FXML private VBox chatBoxContainer;
-    @Getter
-    @FXML private ListView<String> chatListView;
-    @Getter
-    @FXML private TextField chatInput;
-
-    @Setter @Getter private PlacementManager placementManager;
-    @Setter @Getter private GameScreenManager gameScreenManager;
-    @Setter @Getter private ActionManager actionManager;
-    @Setter @Getter public GameManager gameManager;
-    @Setter @Getter private GameBoard gameBoard;
-    @Setter @Getter private ChatManager chatManager;
-    @Getter private PlayerBoardController currentPlayerBoardController;
-    @Getter private NetworkCoordinator networkCoordinator;
-    @Getter private GameSetupCoordinator setupCoordinator;
-    private GameScreenCoordinator gameScreenCoordinator;
-    @Setter private Player viewedPlayer = null;
     private final GameStateService gameStateService = new GameStateService();
-    @Setter @Getter private ReplayManager replayManager;
-    @Getter private Timeline moveHistoryTimeline;
+    @Getter
+    @FXML
+    public BorderPane gameBoardPane;
+    @FXML
+    public StackPane temperaturePane;
+    @FXML
+    public GridPane bottomGrid;
+    @FXML
+    public HBox playerListBar;
+    @FXML
+    public VBox standardProjectsBox;
+    @FXML
+    public FlowPane standardProjectsFlow;
+    @FXML
+    public ProgressBar oxygenProgressBar;
+    @FXML
+    public Label oxygenLabel;
+    @FXML
+    public ProgressBar temperatureProgressBar;
+    @FXML
+    public Label temperatureLabel;
+    @FXML
+    public Label generationLabel;
+    @FXML
+    public Label phaseLabel;
+    @FXML
+    public Button passTurnButton;
+    @FXML
+    public Button convertHeatButton;
+    @FXML
+    public Button convertPlantsButton;
+    @FXML
+    public Label oceansLabel;
+    @FXML
+    public VBox milestonesBox;
+    @FXML
+    public BorderPane playerInterface;
+    @Setter
+    @Getter
+    public GameManager gameManager;
+    @Getter
+    @FXML
+    private AnchorPane hexBoardPane;
+    @FXML
+    private VBox currentPlayerBoardContainer;
+    @Getter
+    @FXML
+    private Button cancelPlacementButton;
+    @FXML
+    private Label lastMoveLabel;
+
+    @Getter
+    @FXML
+    private VBox chatBoxContainer;
+    @Getter
+    @FXML
+    private ListView<String> chatListView;
+    @Getter
+    @FXML
+    private TextField chatInput;
+    
+    @Setter
+    @Getter
+    private GameBoard gameBoard;
+    @Setter
+    @Getter
+    private PlacementManager placementManager;
+    @Setter
+    @Getter
+    private GameScreenManager gameScreenManager;
+    @Setter
+    @Getter
+    private ActionManager actionManager;
+    @Setter
+    @Getter
+    private ChatManager chatManager;
+    @Setter
+    @Getter
+    private ReplayManager replayManager;
+    @Setter
+    private Player viewedPlayer = null;
+    @Getter
+    private Timeline moveHistoryTimeline;
+
+    @FXML
+    private VBox topWrapper;
+    @FXML
+    private VBox bottomWrapper;
+
+    @Getter
+    private PlayerBoardController currentPlayerBoardController;
+    @Getter
+    private NetworkCoordinator networkCoordinator;
+    @Getter
+    private GameSetupCoordinator setupCoordinator;
+    private GameScreenCoordinator gameScreenCoordinator;
+    @Getter
+    private ResponsiveLayoutCoordinator layoutCoordinator;
 
     @FXML
     private void initialize() {
@@ -72,6 +131,12 @@ public class GameScreenController {
         networkCoordinator = new NetworkCoordinator(this);
         setupCoordinator = new GameSetupCoordinator(this);
         gameScreenCoordinator = new GameScreenCoordinator();
+        layoutCoordinator = new ResponsiveLayoutCoordinator(
+                gameBoardPane, topWrapper, bottomWrapper,
+                standardProjectsBox, temperaturePane,
+                temperatureProgressBar, oxygenProgressBar
+        );
+        layoutCoordinator.attach();
         addDebugButtons();
     }
 

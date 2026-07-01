@@ -1,33 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.Group?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.ProgressBar?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.ScrollPane?>
-
-<?import javafx.scene.control.Tooltip?>
-<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+<?import javafx.scene.layout.*?>
+<VBox xmlns:fx="http://javafx.com/fxml" xmlns="http://javafx.com/javafx"
       fx:controller="hr.terraforming.mars.terraformingmars.controller.game.GameScreenController">
     <MenuBar>
         <Menu mnemonicParsing="false" text="Game">
             <MenuItem mnemonicParsing="false" text="New" onAction="#startNewGame"/>
-             <MenuItem mnemonicParsing="false" text="Save" onAction="#saveGame"/>
-             <MenuItem mnemonicParsing="false" text="Load" onAction="#loadGame"/>
+            <MenuItem mnemonicParsing="false" text="Save" onAction="#saveGame"/>
+            <MenuItem mnemonicParsing="false" text="Load" onAction="#loadGame"/>
             <MenuItem mnemonicParsing="false" text="Replay" onAction="#replayGame"/>
         </Menu>
         <Menu mnemonicParsing="false" text="Documentation">
@@ -36,75 +19,80 @@
     </MenuBar>
     <GridPane styleClass="game-background" VBox.vgrow="ALWAYS">
         <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" percentWidth="50.0" />
-            <ColumnConstraints hgrow="SOMETIMES" percentWidth="50.0" />
+            <ColumnConstraints hgrow="SOMETIMES" percentWidth="50.0"/>
+            <ColumnConstraints hgrow="SOMETIMES" percentWidth="50.0"/>
         </columnConstraints>
         <rowConstraints>
-            <RowConstraints vgrow="SOMETIMES" />
+            <RowConstraints vgrow="SOMETIMES"/>
         </rowConstraints>
         <BorderPane fx:id="gameBoardPane" GridPane.columnIndex="0" GridPane.valignment="TOP">
             <center>
                 <AnchorPane fx:id="hexBoardPane" BorderPane.alignment="CENTER"/>
             </center>
             <bottom>
-                <GridPane fx:id="bottomGrid" styleClass="borderpane-vertical" BorderPane.alignment="CENTER">
-                    <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" percentWidth="30.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" percentWidth="40.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" percentWidth="30.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                        <RowConstraints valignment="CENTER" vgrow="SOMETIMES" />
-                    </rowConstraints>
+                <VBox fx:id="bottomWrapper" alignment="CENTER" spacing="5">
+                    <GridPane fx:id="bottomGrid" styleClass="borderpane-vertical" BorderPane.alignment="CENTER">
+                        <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" percentWidth="30.0"/>
+                            <ColumnConstraints hgrow="SOMETIMES" percentWidth="40.0"/>
+                            <ColumnConstraints hgrow="SOMETIMES" percentWidth="30.0"/>
+                        </columnConstraints>
+                        <rowConstraints>
+                            <RowConstraints valignment="CENTER" vgrow="SOMETIMES"/>
+                        </rowConstraints>
 
-                    <VBox alignment="TOP_CENTER" spacing="5" GridPane.columnIndex="0">
-                        <Label styleClass="project-milestone" text="Conversion" />
-                        <Button fx:id="convertHeatButton" styleClass="convert-button" text="Convert Heat">
-                            <tooltip>
-                                <Tooltip text="Convert 8 Heat to raise temperature"
-                                         showDelay="300ms"
-                                         styleClass="tooltip"/>
-                            </tooltip>
-                        </Button>
-                        <Button fx:id="convertPlantsButton" styleClass="convert-button" text="Convert Plants">
-                            <tooltip>
-                                <Tooltip text="Convert 8 Plants to place a Greenery tile"
-                                         showDelay="300ms"
-                                         styleClass="tooltip"/>
-                            </tooltip>
-                        </Button>
-                    </VBox>
+                        <VBox alignment="TOP_CENTER" spacing="5" GridPane.columnIndex="0">
+                            <Label styleClass="project-milestone" text="Conversion"/>
+                            <Button fx:id="convertHeatButton" styleClass="convert-button" text="Convert Heat">
+                                <tooltip>
+                                    <Tooltip text="Convert 8 Heat to raise temperature"
+                                             showDelay="300ms"
+                                             styleClass="tooltip"/>
+                                </tooltip>
+                            </Button>
+                            <Button fx:id="convertPlantsButton" styleClass="convert-button" text="Convert Plants">
+                                <tooltip>
+                                    <Tooltip text="Convert 8 Plants to place a Greenery tile"
+                                             showDelay="300ms"
+                                             styleClass="tooltip"/>
+                                </tooltip>
+                            </Button>
+                        </VBox>
 
-                    <VBox alignment="CENTER" spacing="5" GridPane.columnIndex="1">
-                        <Label styleClass="project-milestone" text="Oceans Placed" />
-                        <Label fx:id="oceansLabel" styleClass="ocean-counter-label" text="0 / 9" />
-                    </VBox>
+                        <VBox alignment="CENTER" spacing="5" GridPane.columnIndex="1">
+                            <Label styleClass="project-milestone" text="Oceans Placed"/>
+                            <Label fx:id="oceansLabel" styleClass="ocean-counter-label" text="0 / 9"/>
+                        </VBox>
 
-                    <VBox fx:id="milestonesBox" alignment="TOP_CENTER" spacing="5" GridPane.columnIndex="2"/>
-                </GridPane>
+                        <VBox fx:id="milestonesBox" alignment="TOP_CENTER" spacing="5" GridPane.columnIndex="2"/>
+                    </GridPane>
+                </VBox>
             </bottom>
             <top>
-                <StackPane styleClass="borderpane-vertical">
-                    <ProgressBar fx:id="oxygenProgressBar" prefHeight="40.0" progress="0.0" styleClass="oxygen-bar" />
-                    <Label fx:id="oxygenLabel" styleClass="meter-text" text="0%" />
-                </StackPane>
+                <VBox fx:id="topWrapper" alignment="CENTER" spacing="5">
+                    <StackPane styleClass="borderpane-vertical">
+                        <ProgressBar fx:id="oxygenProgressBar" prefHeight="40.0" progress="0.0"
+                                     styleClass="oxygen-bar"/>
+                        <Label fx:id="oxygenLabel" styleClass="meter-text" text="0%"/>
+                    </StackPane>
+                </VBox>
             </top>
             <right>
                 <StackPane fx:id="temperaturePane" styleClass="borderpane-horizontal">
                     <Group>
-                        <ProgressBar fx:id="temperatureProgressBar" prefHeight="70.0" progress="0.0" rotate="-90" styleClass="temperature-bar" />
+                        <ProgressBar fx:id="temperatureProgressBar" prefHeight="70.0" progress="0.0" rotate="-90"
+                                     styleClass="temperature-bar"/>
                     </Group>
-                    <Label fx:id="temperatureLabel" styleClass="meter-text" text="-30°C" />
+                    <Label fx:id="temperatureLabel" styleClass="meter-text" text="-30°C"/>
                 </StackPane>
             </right>
             <left>
                 <VBox fx:id="standardProjectsBox" alignment="CENTER" spacing="5.0" styleClass="borderpane-horizontal">
-                    <Label styleClass="project-milestone" text="Standard projects" />
+                    <Label styleClass="project-milestone" text="Standard projects"/>
                     <padding>
-                        <Insets left="5.0" right="5.0" />
+                        <Insets left="5.0" right="5.0"/>
                     </padding>
-                    <!-- Debug kontrole -->
-                    <Button text="🎯 Trigger Final Gen" onAction="#debugTriggerFinalGeneration" />
+                    <FlowPane fx:id="standardProjectsFlow" alignment="CENTER" hgap="5" vgap="5"/>
                 </VBox>
             </left>
         </BorderPane>
@@ -120,10 +108,10 @@
                             <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES"/>
                             <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES"/>
                         </columnConstraints>
-                        <Label fx:id="generationLabel" styleClass="generation-phase-label" />
-                        <Label fx:id="phaseLabel" styleClass="generation-phase-label" GridPane.columnIndex="1" />
+                        <Label fx:id="generationLabel" styleClass="generation-phase-label"/>
+                        <Label fx:id="phaseLabel" styleClass="generation-phase-label" GridPane.columnIndex="1"/>
                     </GridPane>
-                    <HBox fx:id="playerListBar" alignment="CENTER" prefHeight="40.0" spacing="10.0" />
+                    <HBox fx:id="playerListBar" alignment="CENTER" prefHeight="40.0" spacing="10.0"/>
                 </VBox>
             </top>
 
@@ -160,10 +148,11 @@
                     </HBox>
 
                     <VBox fx:id="chatBoxContainer" spacing="5.0" prefHeight="120.0">
-                        <ListView fx:id="chatListView" VBox.vgrow="ALWAYS" />
+                        <ListView fx:id="chatListView" VBox.vgrow="ALWAYS"/>
                         <HBox spacing="5.0" alignment="CENTER">
-                            <TextField fx:id="chatInput" promptText="Type message..." HBox.hgrow="ALWAYS" />
-                            <Button mnemonicParsing="false" onAction="#sendChatMessage" text="Send" styleClass="send-chat"/>
+                            <TextField fx:id="chatInput" promptText="Type message..." HBox.hgrow="ALWAYS"/>
+                            <Button mnemonicParsing="false" onAction="#sendChatMessage" text="Send"
+                                    styleClass="send-chat"/>
                         </HBox>
                     </VBox>
                 </VBox>

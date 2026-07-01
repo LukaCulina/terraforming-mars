@@ -9,6 +9,7 @@ import hr.terraforming.mars.terraformingmars.model.Player;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -50,15 +51,12 @@ public record ViewBuilder(GameScreenController controller, ActionManager actionM
         }
     }
 
-    public void createStandardProjectButtons(VBox standardProjectBox) {
-        standardProjectBox.getChildren().clear();
-        Label projectLabel = new Label("Standard \nProjects ");
-        projectLabel.getStyleClass().add("project-milestone");
-        standardProjectBox.getChildren().add(projectLabel);
+    public void createStandardProjectButtons(FlowPane standardProjectsFlow) {
+        standardProjectsFlow.getChildren().clear();
 
         for (StandardProject project : StandardProject.values()) {
             Button projectButton = new Button(project.getName());
-            projectButton.prefWidthProperty().bind(standardProjectBox.widthProperty().multiply(0.8));
+            projectButton.setPrefWidth(110);
             projectButton.getStyleClass().add("project-button");
             projectButton.setUserData(project);
 
@@ -71,7 +69,7 @@ public record ViewBuilder(GameScreenController controller, ActionManager actionM
             projectButton.setTooltip(tooltip);
 
             projectButton.setOnAction(e -> actionManager.handleStandardProject((StandardProject) ((Button) e.getSource()).getUserData()));
-            standardProjectBox.getChildren().add(projectButton);
+            standardProjectsFlow.getChildren().add(projectButton);
         }
     }
 }
