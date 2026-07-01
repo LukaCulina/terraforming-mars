@@ -345,7 +345,7 @@
     -fx-font-size: 1em;
     -fx-background-radius: 8;
     -fx-alignment: CENTER_LEFT;
-    -fx-padding: 5 10 5 5;
+    -fx-padding: 5;
     -fx-cursor: hand;
 }
 
@@ -353,7 +353,7 @@
     -fx-font-size: 1em;
     -fx-background-radius: 8;
     -fx-alignment: CENTER;
-    -fx-padding: 5 10 5 5;
+    -fx-padding: 5;
     -fx-cursor: hand;
 }
 
@@ -361,7 +361,7 @@
     -fx-font-size: 1em;
     -fx-background-radius: 8;
     -fx-alignment: CENTER;
-    -fx-padding: 5 10 5 5;
+    -fx-padding: 5;
     -fx-cursor: hand;
 }
 

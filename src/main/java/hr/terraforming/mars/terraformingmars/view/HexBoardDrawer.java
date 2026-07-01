@@ -1,10 +1,10 @@
 package hr.terraforming.mars.terraformingmars.view;
 
+import hr.terraforming.mars.terraformingmars.enums.TileType;
 import hr.terraforming.mars.terraformingmars.manager.PlacementManager;
 import hr.terraforming.mars.terraformingmars.model.GameBoard;
 import hr.terraforming.mars.terraformingmars.model.Player;
 import hr.terraforming.mars.terraformingmars.model.Tile;
-import hr.terraforming.mars.terraformingmars.enums.TileType;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -22,14 +22,14 @@ import lombok.extern.slf4j.Slf4j;
 public class HexBoardDrawer {
 
     private final AnchorPane hexBoardPane;
+    private final PlacementManager placementManager;
     @Setter
     private GameBoard gameBoard;
-    private final PlacementManager placementManager;
-    private static final double HEX_SPACING = 0.85;
     private double hexRadius = 0;
 
     public HexBoardDrawer(AnchorPane hexBoardPane, GameBoard gameBoard, PlacementManager placementManager) {
         this.hexBoardPane = hexBoardPane;
+        this.hexBoardPane.setMinSize(0, 0);
         this.gameBoard = gameBoard;
         this.placementManager = placementManager;
     }
@@ -42,21 +42,26 @@ public class HexBoardDrawer {
         hexBoardPane.getChildren().clear();
 
         calculateHexRadius(paneWidth, paneHeight);
-        double hexWidth = 2 * hexRadius;
-        double hexHeight = Math.sqrt(3) * hexRadius;
+
+        double hexWidth = Math.sqrt(3) * hexRadius;
+        double hexHeight = 2 * hexRadius;
+
+        double verticalSpacing = 1.5 * hexRadius;
 
         int numRows = gameBoard.getHexesInRow().length;
-        double startY = (paneHeight - (numRows * hexHeight * HEX_SPACING)) / 2.0 + hexHeight / 2;
+
+        double totalBoardHeight = (numRows - 1) * verticalSpacing + hexHeight;
+        double startY = (paneHeight - totalBoardHeight) / 2.0 + (hexHeight / 2.0);
 
         for (Tile tile : gameBoard.getTiles()) {
-            double[] coords = calculateHexPosition(tile, hexWidth, hexHeight, paneWidth, startY);
+            double[] coords = calculateHexPosition(tile, hexWidth, verticalSpacing, paneWidth, startY);
             double x = coords[0];
             double y = coords[1];
 
-            StackPane tileNode = createTileNode(tile);
+            StackPane tileNode = createTileNode(tile, hexWidth, hexHeight);
 
-            tileNode.setLayoutX(x - hexRadius);
-            tileNode.setLayoutY(y - (hexHeight / 2));
+            tileNode.setLayoutX(x - (hexWidth / 2.0));
+            tileNode.setLayoutY(y - (hexHeight / 2.0));
 
             hexBoardPane.getChildren().add(tileNode);
         }
@@ -66,9 +71,33 @@ public class HexBoardDrawer {
         }
     }
 
-    private StackPane createTileNode(Tile tile) {
+    private double[] calculateHexPosition(Tile tile, double horizontalSpacing, double verticalSpacing, double paneWidth, double startY) {
+        int[] hexesInRow = gameBoard.getHexesInRow();
+        int hexesInThisRow = hexesInRow[tile.getRow()];
+
+        double rowWidth = hexesInThisRow * horizontalSpacing;
+
+        double startX = (paneWidth - rowWidth) / 2.0 + (horizontalSpacing / 2.0);
+
+        double x = startX + tile.getCol() * horizontalSpacing;
+        double y = startY + tile.getRow() * verticalSpacing;
+        return new double[]{x, y};
+    }
+
+    private void calculateHexRadius(double paneWidth, double paneHeight) {
+        int numRows = gameBoard.getHexesInRow().length;
+        int maxHexesInRow = 9;
+
+        double radiusByWidth = paneWidth / (maxHexesInRow * Math.sqrt(3));
+
+        double radiusByHeight = paneHeight / ((numRows - 1) * 1.5 + 2);
+
+        hexRadius = Math.min(radiusByWidth, radiusByHeight) * 0.90;
+    }
+
+    private StackPane createTileNode(Tile tile, double hexWidth, double hexHeight) {
         StackPane stackPane = new StackPane();
-        stackPane.setPrefSize(2 * hexRadius, Math.sqrt(3) * hexRadius);
+        stackPane.setPrefSize(hexWidth, hexHeight);
         stackPane.setUserData(tile);
 
         Polygon hex = createHexPolygon();
@@ -98,27 +127,7 @@ public class HexBoardDrawer {
         }
 
         stackPane.setOnMouseClicked(this::handleHexClick);
-
         return stackPane;
-    }
-
-    private void calculateHexRadius(double paneWidth, double paneHeight) {
-        int numRows = gameBoard.getHexesInRow().length;
-        int maxHexesInRow = 9;
-
-        double radiusByWidth = (paneWidth / (maxHexesInRow * 1.5 + 0.5)) / (2 * HEX_SPACING);
-        double radiusByHeight = (paneHeight / numRows) / (2 * HEX_SPACING);
-        hexRadius = Math.min(radiusByWidth, radiusByHeight) * 1.3;
-    }
-
-    private double[] calculateHexPosition(Tile tile, double hexWidth, double hexHeight, double paneWidth, double startY) {
-        int[] hexesInRow = gameBoard.getHexesInRow();
-        double rowWidth = hexesInRow[tile.getRow()] * hexWidth * HEX_SPACING;
-        double startX = (paneWidth - rowWidth) / 2.0;
-
-        double x = startX + tile.getCol() * hexWidth * HEX_SPACING;
-        double y = startY + tile.getRow() * hexHeight * HEX_SPACING;
-        return new double[]{x, y};
     }
 
     private Polygon createHexPolygon() {
@@ -176,8 +185,8 @@ public class HexBoardDrawer {
 
         if (placementManager.isPlacementMode()) {
             if (!clickedPane.getChildren().isEmpty() && clickedPane.getChildren().getFirst() instanceof Polygon hex && hex.getStyleClass().contains("valid-placement-hex")) {
-                    placementManager.executePlacement(clickedTile);
-                }
+                placementManager.executePlacement(clickedTile);
+            }
 
         } else {
             String ownerInfo = clickedTile.getOwner() != null ? ", Owner: " + clickedTile.getOwner().getName() : "";
