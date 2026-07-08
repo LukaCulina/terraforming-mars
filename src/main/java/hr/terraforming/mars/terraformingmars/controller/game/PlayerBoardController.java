@@ -1,13 +1,14 @@
 package hr.terraforming.mars.terraformingmars.controller.game;
 
 import hr.terraforming.mars.terraformingmars.enums.PlayerType;
-import hr.terraforming.mars.terraformingmars.enums.ResourceType;
 import hr.terraforming.mars.terraformingmars.enums.TagType;
 import hr.terraforming.mars.terraformingmars.manager.ActionManager;
 import hr.terraforming.mars.terraformingmars.model.ApplicationConfiguration;
 import hr.terraforming.mars.terraformingmars.model.Card;
 import hr.terraforming.mars.terraformingmars.model.Player;
 import hr.terraforming.mars.terraformingmars.view.CardViewBuilder;
+import hr.terraforming.mars.terraformingmars.view.FxmlComponentLoader;
+import hr.terraforming.mars.terraformingmars.view.FxmlPaths;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -18,35 +19,11 @@ import java.util.EnumSet;
 import java.util.List;
 
 public class PlayerBoardController {
-    
+
     @FXML
     private Label corporationLabel;
     @FXML
     private Label trLabel;
-    @FXML
-    private Label mcLabel;
-    @FXML
-    private Label steelLabel;
-    @FXML
-    private Label titaniumLabel;
-    @FXML
-    private Label plantsLabel;
-    @FXML
-    private Label energyLabel;
-    @FXML
-    private Label heatLabel;
-    @FXML
-    private Label mcProductionLabel;
-    @FXML
-    private Label steelProductionLabel;
-    @FXML
-    private Label titaniumProductionLabel;
-    @FXML
-    private Label plantsProductionLabel;
-    @FXML
-    private Label energyProductionLabel;
-    @FXML
-    private Label heatProductionLabel;
     @FXML
     private FlowPane tagsLegendPane;
     @FXML
@@ -57,8 +34,18 @@ public class PlayerBoardController {
     private Button showHandButton;
     @FXML
     private Button showPlayedButton;
+    @FXML
+    private VBox playerResourcesContainer;
+    private PlayerResourcesController playerResourcesController;
     private Player player;
     private boolean isShowingHand = true;
+
+    @FXML
+    private void initialize() {
+        this.playerResourcesController = FxmlComponentLoader.load(
+                playerResourcesContainer, FxmlPaths.PLAYER_BOARD_RESOURCES
+        );
+    }
 
     public void setPlayer(Player player, ActionManager actionManager) {
         this.player = player;
@@ -84,19 +71,10 @@ public class PlayerBoardController {
         corporationLabel.setText("Corporation: " + (player.getCorporation() != null ? player.getCorporation().name() : "N/A"));
 
         trLabel.textProperty().bind(player.trProperty().asString("TR: %d"));
-        mcLabel.textProperty().bind(player.mcProperty().asString());
-        steelLabel.textProperty().bind(player.resourceProperty(ResourceType.STEEL).asString());
-        titaniumLabel.textProperty().bind(player.resourceProperty(ResourceType.TITANIUM).asString());
-        plantsLabel.textProperty().bind(player.resourceProperty(ResourceType.PLANTS).asString());
-        energyLabel.textProperty().bind(player.resourceProperty(ResourceType.ENERGY).asString());
-        heatLabel.textProperty().bind(player.resourceProperty(ResourceType.HEAT).asString());
 
-        mcProductionLabel.textProperty().bind(player.productionProperty(ResourceType.MEGA_CREDITS).asString());
-        steelProductionLabel.textProperty().bind(player.productionProperty(ResourceType.STEEL).asString());
-        titaniumProductionLabel.textProperty().bind(player.productionProperty(ResourceType.TITANIUM).asString());
-        plantsProductionLabel.textProperty().bind(player.productionProperty(ResourceType.PLANTS).asString());
-        energyProductionLabel.textProperty().bind(player.productionProperty(ResourceType.ENERGY).asString());
-        heatProductionLabel.textProperty().bind(player.productionProperty(ResourceType.HEAT).asString());
+        if (playerResourcesController != null) {
+            playerResourcesController.updateResources(player);
+        }
     }
 
     private void setupButtons(ActionManager actionManager) {
