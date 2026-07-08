@@ -3,6 +3,7 @@ package hr.terraforming.mars.terraformingmars.util;
 import hr.terraforming.mars.terraformingmars.config.ResourceConfig;
 import hr.terraforming.mars.terraformingmars.exception.FxmlLoadException;
 import javafx.animation.FadeTransition;
+import javafx.animation.Interpolator;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -20,28 +21,29 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import javafx.util.Duration;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+
 import java.io.IOException;
 import java.util.function.Consumer;
 
 @Slf4j
 public class ScreenUtils {
 
+    private static final int LOADING_PANE_SIZE = 100;
+    private static final int TRANSITION_DURATION = 200;
+    private static final double WIDTH_PERCENT = 0.7;
+    private static final double HEIGHT_PERCENT = 0.8;
+    private static final double INITIAL_DELAY_SECONDS = 0.2;
+    private static final double BACKGROUND_BLUR_RADIUS = 4.0;
+    private static final int MODAL_FADE_DURATION = 150;
+    private static ResourceConfig config;
+    @Setter
+    private static java.util.function.DoubleSupplier stageWidthSupplier;
+
     private ScreenUtils() {
         throw new IllegalStateException("Utility class");
     }
-
-    private static ResourceConfig config;
-
-    public record FxmlResult<T>(Parent root, T controller) {}
-
-    private static final int LOADING_PANE_SIZE = 100;
-    private static final int TRANSITION_DURATION = 200;
-    private static final double WIDTH_PERCENT = 0.65;
-    private static final double HEIGHT_PERCENT = 0.75;
-    private static final double INITIAL_DELAY_SECONDS = 0.3;
-    private static final double BACKGROUND_BLUR_RADIUS = 8.0;
-    private static final int MODAL_FADE_DURATION = 150;
 
     public static void setConfig(ResourceConfig resourceConfig) {
         if (config != null) {
@@ -74,12 +76,16 @@ public class ScreenUtils {
         Scene scene = new Scene(root);
 
         var css = ScreenUtils.class.getResource(config.cssPath());
-
         if (css == null) {
             throw new IllegalStateException("CSS file not found: " + config.cssPath());
         }
-
         scene.getStylesheets().add(css.toExternalForm());
+
+        if (stageWidthSupplier != null) {
+            double fontSize = Math.max(10, stageWidthSupplier.getAsDouble() * 0.007);
+            root.setStyle("-fx-font-size: " + fontSize + "px;");
+        }
+
         return scene;
     }
 
@@ -176,6 +182,7 @@ public class ScreenUtils {
         FadeTransition fade = new FadeTransition(Duration.millis(MODAL_FADE_DURATION), root);
         fade.setFromValue(0);
         fade.setToValue(1.0);
+        fade.setInterpolator(Interpolator.EASE_OUT);
         stage.setOnShown(_ -> fade.play());
     }
 
@@ -196,5 +203,8 @@ public class ScreenUtils {
         stage.setTitle("Loading...");
 
         return stage;
+    }
+
+    public record FxmlResult<T>(Parent root, T controller) {
     }
 }

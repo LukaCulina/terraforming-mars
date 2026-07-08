@@ -5,9 +5,11 @@ import hr.terraforming.mars.terraformingmars.factory.CardFactory;
 import hr.terraforming.mars.terraformingmars.util.ScreenUtils;
 import hr.terraforming.mars.terraformingmars.util.XmlUtils;
 import hr.terraforming.mars.terraformingmars.view.ScreenNavigator;
+import javafx.animation.PauseTransition;
 import javafx.application.Application;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class TerraformingMarsApplication extends Application {
     private static final String FONT_SIZE = "-fx-font-size: ";
@@ -23,12 +25,13 @@ public class TerraformingMarsApplication extends Application {
         XmlUtils.clearGameMoves();
 
         ResourceConfig config = new ResourceConfig(
-                "/hr/terraforming/mars/terraformingmars/",
+                "/hr/terraforming/mars/terraformingmars/fxml/",
                 "/hr/terraforming/mars/terraformingmars/css/styles.css",
                 "/hr/terraforming/mars/terraformingmars/data/cards.json"
         );
 
         ScreenUtils.setConfig(config);
+        ScreenUtils.setStageWidthSupplier(stage::getWidth);
         CardFactory.setConfig(config);
         CardFactory.loadAllCards();
 
@@ -50,23 +53,14 @@ public class TerraformingMarsApplication extends Application {
 
         stage.show();
 
-        stage.sceneProperty().addListener((_, _, newScene) -> {
-            if (newScene != null) {
-                double fontSize = Math.max(10, stage.getWidth() * 0.007);
-                newScene.getRoot().setStyle(FONT_SIZE + fontSize + "px;");
-            }
-        });
-
-        stage.widthProperty().addListener((_, _, newVal) -> {
+        PauseTransition fontResizeDebounce = new PauseTransition(Duration.millis(150));
+        fontResizeDebounce.setOnFinished(_ -> {
             if (stage.getScene() != null) {
-                double fontSize = Math.max(10, newVal.doubleValue() * 0.007);
+                double fontSize = Math.max(10, stage.getWidth() * 0.007);
                 stage.getScene().getRoot().setStyle(FONT_SIZE + fontSize + "px;");
             }
         });
 
-        if (stage.getScene() != null) {
-            double fontSize = Math.max(10, stage.getWidth() * 0.007);
-            stage.getScene().getRoot().setStyle(FONT_SIZE + fontSize + "px;");
-        }
+        stage.widthProperty().addListener((_, _, _) -> fontResizeDebounce.playFromStart());
     }
 }
