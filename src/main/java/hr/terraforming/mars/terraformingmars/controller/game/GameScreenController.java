@@ -11,7 +11,8 @@ import hr.terraforming.mars.terraformingmars.service.GameStateService;
 import hr.terraforming.mars.terraformingmars.util.DialogUtils;
 import hr.terraforming.mars.terraformingmars.util.DocumentationUtils;
 import hr.terraforming.mars.terraformingmars.util.GameMoveUtils;
-import hr.terraforming.mars.terraformingmars.view.PlayerBoardLoader;
+import hr.terraforming.mars.terraformingmars.view.FxmlComponentLoader;
+import hr.terraforming.mars.terraformingmars.view.FxmlPaths;
 import hr.terraforming.mars.terraformingmars.view.ScreenNavigator;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
@@ -86,7 +87,7 @@ public class GameScreenController {
     @Getter
     @FXML
     private TextField chatInput;
-    
+
     @Setter
     @Getter
     private GameBoard gameBoard;
@@ -127,7 +128,7 @@ public class GameScreenController {
 
     @FXML
     private void initialize() {
-        currentPlayerBoardController = PlayerBoardLoader.load(currentPlayerBoardContainer);
+        currentPlayerBoardController = FxmlComponentLoader.load(currentPlayerBoardContainer, FxmlPaths.PLAYER_BOARD);
         networkCoordinator = new NetworkCoordinator(this);
         setupCoordinator = new GameSetupCoordinator(this);
         gameScreenCoordinator = new GameScreenCoordinator();

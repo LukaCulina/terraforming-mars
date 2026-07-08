@@ -10,6 +10,7 @@ import hr.terraforming.mars.terraformingmars.model.GameMove;
 import hr.terraforming.mars.terraformingmars.thread.SaveNewGameMoveThread;
 import hr.terraforming.mars.terraformingmars.util.ScreenUtils;
 import hr.terraforming.mars.terraformingmars.util.XmlUtils;
+import hr.terraforming.mars.terraformingmars.view.FxmlPaths;
 import javafx.application.Platform;
 import javafx.stage.Window;
 import lombok.Getter;
@@ -150,7 +151,7 @@ public class ActionManager {
 
         ScreenUtils.showAsModal(
                 owner,
-                "SellPatents.fxml",
+                FxmlPaths.SELL_PATENTS,
                 "Sell Patents",
                 (SellPatentsController c) -> c.setupForSale(getGameManager().getCurrentPlayer(), onSaleCompleteAction)
         );

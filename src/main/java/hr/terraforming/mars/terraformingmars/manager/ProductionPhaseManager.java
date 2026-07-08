@@ -10,6 +10,7 @@ import hr.terraforming.mars.terraformingmars.model.ProductionReport;
 import hr.terraforming.mars.terraformingmars.network.message.ProductionPhaseMessage;
 import hr.terraforming.mars.terraformingmars.service.ProductionReportService;
 import hr.terraforming.mars.terraformingmars.util.ScreenUtils;
+import hr.terraforming.mars.terraformingmars.view.FxmlPaths;
 import javafx.application.Platform;
 import javafx.stage.Window;
 import lombok.extern.slf4j.Slf4j;
@@ -71,7 +72,7 @@ public class ProductionPhaseManager {
 
         ScreenUtils.showAsModal(
                 owner,
-                "ProductionPhase.fxml",
+                FxmlPaths.PRODUCTION_PHASE,
                 "Production Phase - Generation " + generation,
                 (ProductionPhaseController c) -> {
                     c.loadProductionSummaries(summaries, generation);

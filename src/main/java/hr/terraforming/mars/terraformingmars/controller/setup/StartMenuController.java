@@ -5,6 +5,7 @@ import hr.terraforming.mars.terraformingmars.model.GameState;
 import hr.terraforming.mars.terraformingmars.service.GameStateService;
 import hr.terraforming.mars.terraformingmars.util.DialogUtils;
 import hr.terraforming.mars.terraformingmars.util.ScreenUtils;
+import hr.terraforming.mars.terraformingmars.view.FxmlPaths;
 import hr.terraforming.mars.terraformingmars.view.ScreenNavigator;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -31,7 +32,7 @@ public class StartMenuController {
         GameState loadedState = gameStateService.loadGame();
 
         if (loadedState != null) {
-            var result = ScreenUtils.loadFxml("GameScreen.fxml");
+            var result = ScreenUtils.loadFxml(FxmlPaths.GAME_SCREEN);
 
             GameScreenController controller = (GameScreenController) result.controller();
             Scene mainGameScene = ScreenUtils.createScene(result.root());

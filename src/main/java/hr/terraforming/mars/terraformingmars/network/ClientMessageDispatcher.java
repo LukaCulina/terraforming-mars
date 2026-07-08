@@ -10,6 +10,7 @@ import hr.terraforming.mars.terraformingmars.manager.GameFlowManager;
 import hr.terraforming.mars.terraformingmars.model.*;
 import hr.terraforming.mars.terraformingmars.network.message.*;
 import hr.terraforming.mars.terraformingmars.util.ScreenUtils;
+import hr.terraforming.mars.terraformingmars.view.FxmlPaths;
 import hr.terraforming.mars.terraformingmars.view.ScreenNavigator;
 import javafx.application.Platform;
 import lombok.extern.slf4j.Slf4j;
@@ -94,7 +95,7 @@ public record ClientMessageDispatcher(GameClientThread client, List<GameStateLis
     private void showResearchModal(Player player, List<Card> offer, GameManager gm) {
         ScreenUtils.showAsModal(
                 ScreenNavigator.getMainStage(),
-                "ChooseCards.fxml",
+                FxmlPaths.CHOOSE_CARDS,
                 "Research Phase",
                 (ChooseCardsController c) -> c.setup(player, offer, null, gm, true)
         );
@@ -162,7 +163,7 @@ public record ClientMessageDispatcher(GameClientThread client, List<GameStateLis
                                         GameScreenController controller, String playerName) {
         ScreenUtils.showAsModal(
                 controller.getSceneWindow(),
-                "FinalGreenery.fxml",
+                FxmlPaths.FINAL_GREENERY,
                 "Final Greenery Conversion",
                 (FinalGreeneryController c) -> c.setupSinglePlayer(
                         player, gm, controller,

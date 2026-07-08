@@ -3,9 +3,10 @@ package hr.terraforming.mars.terraformingmars.network;
 import hr.terraforming.mars.terraformingmars.controller.game.ChooseCardsController;
 import hr.terraforming.mars.terraformingmars.manager.ActionManager;
 import hr.terraforming.mars.terraformingmars.model.*;
-import hr.terraforming.mars.terraformingmars.network.message.CorporationOfferMessage;
 import hr.terraforming.mars.terraformingmars.network.message.CardOfferMessage;
+import hr.terraforming.mars.terraformingmars.network.message.CorporationOfferMessage;
 import hr.terraforming.mars.terraformingmars.util.ScreenUtils;
+import hr.terraforming.mars.terraformingmars.view.FxmlPaths;
 import hr.terraforming.mars.terraformingmars.view.ScreenNavigator;
 import javafx.application.Platform;
 import lombok.extern.slf4j.Slf4j;
@@ -67,7 +68,7 @@ public record CardDistributor(GameManager gameManager, GameServerThread serverTh
 
             if (isCurrentPlayer(player)) {
                 Platform.runLater(() -> ScreenUtils.showAsModal(
-                        ScreenNavigator.getMainStage(), "ChooseCards.fxml", "Research Phase",
+                        ScreenNavigator.getMainStage(), FxmlPaths.CHOOSE_CARDS, "Research Phase",
                         (ChooseCardsController c) -> c.setup(player, offer, cards -> handleHostConfirmation(player, cards), gameManager, true)
                 ));
             } else {

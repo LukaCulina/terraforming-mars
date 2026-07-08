@@ -9,6 +9,7 @@ import hr.terraforming.mars.terraformingmars.model.*;
 import hr.terraforming.mars.terraformingmars.network.message.FinalGreeneryOfferMessage;
 import hr.terraforming.mars.terraformingmars.network.message.GameOverMessage;
 import hr.terraforming.mars.terraformingmars.util.ScreenUtils;
+import hr.terraforming.mars.terraformingmars.view.FxmlPaths;
 import hr.terraforming.mars.terraformingmars.view.ScreenNavigator;
 import javafx.application.Platform;
 import javafx.stage.Window;
@@ -22,8 +23,8 @@ public class FinalGreeneryPhaseManager {
     private final GameManager gameManager;
     private final Window ownerWindow;
     private final Runnable onComplete;
-    private int currentPlayerIndex = 0;
     private final GameScreenController controller;
+    private int currentPlayerIndex = 0;
 
     public FinalGreeneryPhaseManager(GameManager gameManager, Window ownerWindow,
                                      GameScreenController controller, Runnable onComplete) {
@@ -117,7 +118,7 @@ public class FinalGreeneryPhaseManager {
     private void showModalForPlayer(Player player) {
         ScreenUtils.showAsModal(
                 ownerWindow,
-                "FinalGreenery.fxml",
+                FxmlPaths.FINAL_GREENERY,
                 "Final Greenery Conversion - " + player.getName(),
                 (FinalGreeneryController c) -> c.setupSinglePlayer(
                         player, gameManager, controller, this::finishForCurrentPlayer

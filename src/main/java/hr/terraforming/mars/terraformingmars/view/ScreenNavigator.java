@@ -1,6 +1,9 @@
 package hr.terraforming.mars.terraformingmars.view;
 
-import hr.terraforming.mars.terraformingmars.controller.game.*;
+import hr.terraforming.mars.terraformingmars.controller.game.ChooseCardsController;
+import hr.terraforming.mars.terraformingmars.controller.game.ChooseCorporationController;
+import hr.terraforming.mars.terraformingmars.controller.game.GameOverController;
+import hr.terraforming.mars.terraformingmars.controller.game.GameScreenController;
 import hr.terraforming.mars.terraformingmars.controller.setup.*;
 import hr.terraforming.mars.terraformingmars.model.*;
 import hr.terraforming.mars.terraformingmars.util.GameMoveUtils;
@@ -10,27 +13,30 @@ import javafx.stage.Stage;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import java.util.*;
+
+import java.util.List;
 import java.util.function.Consumer;
 
 @Slf4j
 public class ScreenNavigator {
 
+    private static final int STARTING_CARDS = 6;
+    private static final int CARD_COST = 3;
+    @Getter
+    @Setter
+    private static Stage mainStage;
+
     private ScreenNavigator() {
         throw new IllegalStateException("Utility class");
     }
 
-    @Getter @Setter
-    private static Stage mainStage;
-    private static final int STARTING_CARDS = 6;
-    private static final int CARD_COST = 3;
-
     public static void showStartMenu() {
         ScreenUtils.showAsScreen(
                 mainStage,
-                "StartMenu.fxml",
+                FxmlPaths.START_MENU,
                 "Terraforming Mars - Main Menu",
-                (StartMenuController _) -> {}
+                (StartMenuController _) -> {
+                }
         );
 
         log.info("Main Menu displayed.");
@@ -39,34 +45,37 @@ public class ScreenNavigator {
     public static void showChooseModeScreen() {
         ScreenUtils.showAsScreen(
                 mainStage,
-                "ChooseMode.fxml",
+                FxmlPaths.CHOOSE_MODE,
                 "Choose Mode",
-                (ChooseModeController _) -> {}
+                (ChooseModeController _) -> {
+                }
         );
     }
 
     public static void showChooseOnlineModeScreen() {
         ScreenUtils.showAsScreen(
                 mainStage,
-                "ChooseOnlineMode.fxml",
+                FxmlPaths.CHOOSE_ONLINE_MODE,
                 "Choose Online Mode",
-                (ChooseOnlineModeController _) -> {}
+                (ChooseOnlineModeController _) -> {
+                }
         );
     }
 
     public static void showJoinGameScreen() {
         ScreenUtils.showAsScreen(
                 mainStage,
-                "JoinGame.fxml",
+                FxmlPaths.JOIN_GAME,
                 "Join Game",
-                (JoinGameController _) -> {}
+                (JoinGameController _) -> {
+                }
         );
     }
 
     public static void showChooseNameScreen(GameManager gameManager, GameBoard gameBoard) {
         ScreenUtils.showAsScreen(
                 mainStage,
-                "ChooseName.fxml",
+                FxmlPaths.CHOOSE_NAME,
                 "Choose a name",
                 (ChooseNameController controller) -> controller.setup(gameManager, gameBoard)
         );
@@ -75,14 +84,15 @@ public class ScreenNavigator {
     public static void showWaitingScreen(GameManager gameManager, int expectedPlayerCount) {
         ScreenUtils.showAsScreen(
                 mainStage,
-                "Waiting.fxml",
+                FxmlPaths.WAITING,
                 "Waiting for Players",
                 (WaitingController controller) -> controller.setup(gameManager, expectedPlayerCount)
         );
     }
 
     public static void showChoosePlayersScreen() {
-        ScreenUtils.showAsScreen(mainStage, "ChoosePlayers.fxml", "Choose the number of players", (ChoosePlayersController _) -> {});
+        ScreenUtils.showAsScreen(mainStage, FxmlPaths.CHOOSE_PLAYERS, "Choose the number of players", (ChoosePlayersController _) -> {
+        });
     }
 
     public static void showChooseCorporationScreen(GameManager gameManager) {
@@ -94,7 +104,7 @@ public class ScreenNavigator {
     public static void showChooseCorporationScreen(Player player, List<Corporation> offer, GameManager gameManager) {
         ScreenUtils.showAsScreen(
                 mainStage,
-                "ChooseCorporation.fxml",
+                FxmlPaths.CHOOSE_CORPORATION,
                 "Choose for " + player.getName(),
                 (ChooseCorporationController c) -> c.setCorporationOptions(player, offer, gameManager)
         );
@@ -112,7 +122,7 @@ public class ScreenNavigator {
 
         ScreenUtils.showAsScreen(
                 mainStage,
-                "ChooseCards.fxml",
+                FxmlPaths.CHOOSE_CARDS,
                 "Choose Initial Cards - " + player.getName(),
                 (ChooseCardsController c) -> c.setup(player, offer, onConfirmAction, gameManager, false)
         );
@@ -137,7 +147,7 @@ public class ScreenNavigator {
     }
 
     public static void startGameWithChosenCards(GameState gameState) {
-        var result = ScreenUtils.loadFxml("GameScreen.fxml");
+        var result = ScreenUtils.loadFxml(FxmlPaths.GAME_SCREEN);
         GameScreenController gameScreenController = (GameScreenController) result.controller();
         Scene mainGameScene = ScreenUtils.createScene(result.root());
         ApplicationConfiguration.getInstance().setActiveGameController(gameScreenController);
@@ -151,9 +161,9 @@ public class ScreenNavigator {
     public static void showGameOverScreen(List<Player> rankedPlayers) {
         ScreenUtils.showAsScreen(
                 mainStage,
-                "GameOver.fxml",
+                FxmlPaths.GAME_OVER,
                 "Game Over - Final Score",
-                 (GameOverController c) -> c.setFinalScores(rankedPlayers));
+                (GameOverController c) -> c.setFinalScores(rankedPlayers));
     }
 
     public static void showGameScreen(GameScreenController controller) {

@@ -1,15 +1,17 @@
 package hr.terraforming.mars.terraformingmars.replay;
 
 import hr.terraforming.mars.terraformingmars.controller.game.*;
-import hr.terraforming.mars.terraformingmars.enums.*;
+import hr.terraforming.mars.terraformingmars.enums.ActionType;
+import hr.terraforming.mars.terraformingmars.enums.Milestone;
+import hr.terraforming.mars.terraformingmars.enums.ResourceType;
+import hr.terraforming.mars.terraformingmars.enums.StandardProject;
 import hr.terraforming.mars.terraformingmars.exception.GameStateException;
 import hr.terraforming.mars.terraformingmars.factory.CardFactory;
-import hr.terraforming.mars.terraformingmars.model.GameManager;
 import hr.terraforming.mars.terraformingmars.model.*;
 import hr.terraforming.mars.terraformingmars.service.CostService;
-import hr.terraforming.mars.terraformingmars.model.ProductionReport;
 import hr.terraforming.mars.terraformingmars.service.ProductionReportService;
 import hr.terraforming.mars.terraformingmars.util.ScreenUtils;
+import hr.terraforming.mars.terraformingmars.view.FxmlPaths;
 import javafx.application.Platform;
 import lombok.extern.slf4j.Slf4j;
 
@@ -31,7 +33,7 @@ public record ReplayMoveExecutor(GameScreenController controller, ReplayLoader l
 
                     ScreenUtils.showAsModal(
                             controller.getSceneWindow(),
-                            "ChooseCards.fxml",
+                            FxmlPaths.CHOOSE_CARDS,
                             "Research (Replay)",
                             (ChooseCardsController c) -> c.replayShowChosenCards(cardNames, playerName)
                     );
@@ -49,7 +51,7 @@ public record ReplayMoveExecutor(GameScreenController controller, ReplayLoader l
 
                         ScreenUtils.showAsModal(
                                 controller.getSceneWindow(),
-                                "SellPatents.fxml",
+                                FxmlPaths.SELL_PATENTS,
                                 "Sell Patents (Replay)",
                                 (SellPatentsController c) -> c.replayShowSoldPatents(soldCardNames, handBeforeSale, playerName)
                         );
@@ -65,7 +67,7 @@ public record ReplayMoveExecutor(GameScreenController controller, ReplayLoader l
                     int cost = Integer.parseInt(parts[2]);
                     ScreenUtils.showAsModal(
                             controller.getSceneWindow(),
-                            "FinalGreenery.fxml",
+                            FxmlPaths.FINAL_GREENERY,
                             "Final Greenery (Replay)",
                             (FinalGreeneryController c) -> c.replayShowFinalGreenery(playerName, plants, cost)
                     );
@@ -79,7 +81,7 @@ public record ReplayMoveExecutor(GameScreenController controller, ReplayLoader l
 
                     ScreenUtils.showAsModal(
                             controller.getSceneWindow(),
-                            "ProductionPhase.fxml",
+                            FxmlPaths.PRODUCTION_PHASE,
                             "Production Phase - Generation " + generation + " (Replay)",
                             (ProductionPhaseController c) -> c.replayShowProductionSummary(summaries, generation)
                     );

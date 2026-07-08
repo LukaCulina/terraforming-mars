@@ -6,6 +6,7 @@ import hr.terraforming.mars.terraformingmars.enums.ActionType;
 import hr.terraforming.mars.terraformingmars.enums.PlayerType;
 import hr.terraforming.mars.terraformingmars.model.*;
 import hr.terraforming.mars.terraformingmars.util.ScreenUtils;
+import hr.terraforming.mars.terraformingmars.view.FxmlPaths;
 import javafx.application.Platform;
 import javafx.stage.Window;
 import lombok.extern.slf4j.Slf4j;
@@ -61,7 +62,7 @@ public class ResearchPhaseManager {
 
         ScreenUtils.showAsModal(
                 ownerWindow,
-                "ChooseCards.fxml",
+                FxmlPaths.CHOOSE_CARDS,
                 "Research Phase - " + currentPlayer.getName(),
                 (ChooseCardsController c) -> c.setup(currentPlayer, offer, this::finishForCurrentPlayer, gameManager, true)
         );
