@@ -63,7 +63,10 @@ public class ProductionPhaseManager {
 
     public void handleProductionPhaseMessage(ProductionPhaseMessage message) {
         log.debug("Received production phase message for Generation {}", message.generation());
-        Platform.runLater(() -> showProductionModal(message.summaries(), message.generation()));
+        Platform.runLater(() -> {
+            controller.getGameBoardPane().getScene().getRoot().setDisable(true);
+            showProductionModal(message.summaries(), message.generation());
+        });
     }
 
 

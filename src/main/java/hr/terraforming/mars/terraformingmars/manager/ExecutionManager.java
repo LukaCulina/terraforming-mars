@@ -5,6 +5,7 @@ import hr.terraforming.mars.terraformingmars.enums.*;
 import hr.terraforming.mars.terraformingmars.exception.GameStateException;
 import hr.terraforming.mars.terraformingmars.model.*;
 import hr.terraforming.mars.terraformingmars.service.CostService;
+import javafx.application.Platform;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDateTime;
@@ -60,6 +61,11 @@ public class ExecutionManager {
         }
 
         if (allPlayersPassed) {
+            Platform.runLater(() -> {
+                if (controller.getGameBoardPane().getScene() != null) {
+                    controller.getGameBoardPane().getScene().getRoot().setDisable(true);
+                }
+            });
             PlayerType playerType = ApplicationConfiguration.getInstance().getPlayerType();
             if (playerType == PlayerType.HOST || playerType == PlayerType.LOCAL) {
                 gameFlowManager.startProductionPhase();

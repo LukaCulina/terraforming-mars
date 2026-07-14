@@ -12,6 +12,7 @@ import hr.terraforming.mars.terraformingmars.view.HexBoardDrawer;
 import hr.terraforming.mars.terraformingmars.view.component.ActionPanelComponents;
 import hr.terraforming.mars.terraformingmars.view.component.GlobalStatusComponents;
 import hr.terraforming.mars.terraformingmars.view.component.PlayerControlComponents;
+import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import lombok.Getter;
@@ -37,8 +38,13 @@ public class GameScreenManager {
         this.playerControls = playerControls;
     }
 
-    private GameManager getGameManager() { return controller.getGameManager(); }
-    private GameBoard getGameBoard() { return controller.getGameBoard(); }
+    private GameManager getGameManager() {
+        return controller.getGameManager();
+    }
+
+    private GameBoard getGameBoard() {
+        return controller.getGameBoard();
+    }
 
     public void updateHexBoardDrawer() {
         if (hexBoardDrawer != null) {
@@ -53,6 +59,15 @@ public class GameScreenManager {
         updatePlayerButtonsHighlight(viewedPlayer);
         updateConvertButtonsState(isPlacing, isMyTurn);
         drawBoard();
+
+        GamePhase phase = getGameManager().getCurrentPhase();
+        if (phase == GamePhase.ACTIONS || phase == GamePhase.FINAL_GREENERY) {
+            Platform.runLater(() -> {
+                if (controller.getGameBoardPane().getScene() != null) {
+                    controller.getGameBoardPane().getScene().getRoot().setDisable(false);
+                }
+            });
+        }
     }
 
     private void drawBoard() {
