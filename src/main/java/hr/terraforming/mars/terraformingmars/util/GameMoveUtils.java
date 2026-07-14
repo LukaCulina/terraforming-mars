@@ -23,28 +23,32 @@ import java.util.*;
 @Slf4j
 public class GameMoveUtils {
 
-    private static final String GAME_MOVE_HISTORY_FILE_NAME = "gameMoves/moves.dat";
+    private static final String GAME_MOVE_HISTORY_FILENAME = "moves.dat";
 
     private GameMoveUtils() {
         throw new IllegalStateException("Utility class");
+    }
+
+    private static File getGameMoveHistoryFile() {
+        String userHome = System.getProperty("user.home");
+        File directory = new File(userHome, ".terraformingmars");
+
+        if (!directory.exists() && !directory.mkdirs()) {
+            log.warn("Could not create directory: {}", directory.getAbsolutePath());
+        }
+        return new File(directory, GAME_MOVE_HISTORY_FILENAME);
     }
 
     public static void saveNewGameMove(GameMove newGameMove) {
         List<GameMove> gameMoveList = loadAllGameMoves();
         gameMoveList.add(newGameMove);
 
-        File file = new File(GAME_MOVE_HISTORY_FILE_NAME);
-        File parentDir = file.getParentFile();
-
-        if (parentDir != null && !parentDir.exists() && !parentDir.mkdirs()) {
-            log.error("Failed to create directory: {}", parentDir.getAbsolutePath());
-            return;
-        }
+        File file = getGameMoveHistoryFile();
 
         try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(file))) {
             outputStream.writeObject(gameMoveList);
         } catch (IOException e) {
-            log.error("Failed to save game moves to file '{}'", GAME_MOVE_HISTORY_FILE_NAME, e);
+            log.error("Failed to save game moves to file '{}'", file.getAbsolutePath(), e);
         }
     }
 
@@ -58,7 +62,7 @@ public class GameMoveUtils {
 
     @SuppressWarnings("unchecked")
     private static List<GameMove> loadAllGameMoves() {
-        File file = new File(GAME_MOVE_HISTORY_FILE_NAME);
+        File file = getGameMoveHistoryFile();
         if (!file.exists()) {
             return new ArrayList<>();
         }
@@ -72,7 +76,7 @@ public class GameMoveUtils {
     }
 
     public static void deleteMoveHistoryFile() {
-        File file = new File(GAME_MOVE_HISTORY_FILE_NAME);
+        File file = getGameMoveHistoryFile();
         if (file.exists()) {
             try {
                 Files.delete(file.toPath());

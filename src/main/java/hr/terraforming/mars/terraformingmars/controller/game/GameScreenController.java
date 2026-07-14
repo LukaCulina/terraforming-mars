@@ -115,6 +115,8 @@ public class GameScreenController {
     private VBox topWrapper;
     @FXML
     private VBox bottomWrapper;
+    @FXML
+    private Menu documentationMenu;
 
     @Getter
     private PlayerBoardController currentPlayerBoardController;
@@ -138,7 +140,17 @@ public class GameScreenController {
                 temperatureProgressBar, oxygenProgressBar
         );
         layoutCoordinator.attach();
-        addDebugButtons();
+
+        if (isDevelopmentMode()) {
+            addDebugButtons();
+        } else {
+            documentationMenu.setVisible(false);
+            documentationMenu.setDisable(true);
+        }
+    }
+
+    private boolean isDevelopmentMode() {
+        return !Boolean.getBoolean("app.packaged");
     }
 
     private void broadcastIfHost() {

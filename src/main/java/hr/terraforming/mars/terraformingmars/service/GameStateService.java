@@ -8,12 +8,23 @@ import hr.terraforming.mars.terraformingmars.util.GameMoveUtils;
 import hr.terraforming.mars.terraformingmars.util.XmlUtils;
 import javafx.scene.control.Alert;
 import lombok.extern.slf4j.Slf4j;
+
 import java.io.*;
 
 @Slf4j
 public class GameStateService {
 
-    public static final String SAVE_GAME_FILE_NAME = "saveGame/gameSave.dat";
+    public static final String SAVE_GAME_FILENAME = "gameSave.dat";
+
+    private static File getSaveGameFile() {
+        String userHome = System.getProperty("user.home");
+        File directory = new File(userHome, ".terraformingmars");
+
+        if (!directory.exists() && !directory.mkdirs()) {
+            log.warn("Could not create directory: {}", directory.getAbsolutePath());
+        }
+        return new File(directory, SAVE_GAME_FILENAME);
+    }
 
     public void clearGameData() {
         GameMoveUtils.deleteMoveHistoryFile();
@@ -23,7 +34,7 @@ public class GameStateService {
     public void saveGame(GameManager gameManager, GameBoard gameBoard) {
         GameState gameState = new GameState(gameManager, gameBoard);
 
-        File file = new File(SAVE_GAME_FILE_NAME);
+        File file = getSaveGameFile();
         File parentDir = file.getParentFile();
         if (!parentDir.exists()) {
             if (parentDir.mkdirs()) {
@@ -44,7 +55,7 @@ public class GameStateService {
     }
 
     public GameState loadGame() {
-        File file = new File(SAVE_GAME_FILE_NAME);
+        File file = getSaveGameFile();
 
         if (file.exists()) {
             try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {

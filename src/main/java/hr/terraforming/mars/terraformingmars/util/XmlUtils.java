@@ -24,8 +24,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -34,7 +32,7 @@ import java.util.List;
 @Slf4j
 public class XmlUtils {
 
-    private static final String GAME_MOVES_XML_FILE = "xml/gameMoves.xml";
+    private static final String GAME_MOVES_XML_FILE = "gameMoves.xml";
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
     private static final String TILE_TYPE = "TileType";
 
@@ -76,8 +74,18 @@ public class XmlUtils {
         return doc;
     }
 
+    private static File getGameMovesFile() {
+        String userHome = System.getProperty("user.home");
+        File directory = new File(userHome, ".terraformingmars");
+
+        if (!directory.exists() && !directory.mkdirs()) {
+            log.warn("Could not create directory: {}", directory.getAbsolutePath());
+        }
+        return new File(directory, GAME_MOVES_XML_FILE);
+    }
+
     public static synchronized void appendGameMove(GameMove move) {
-        File xmlFile = new File(GAME_MOVES_XML_FILE);
+        File xmlFile = getGameMovesFile();
 
         try {
             DocumentBuilderFactory dbf = createSecureDocumentBuilderFactory();
@@ -89,7 +97,7 @@ public class XmlUtils {
             Element newMoveElement = createGameMoveElement(doc, move);
             rootElement.appendChild(newMoveElement);
 
-            writeDocument(doc);
+            writeDocument(doc, xmlFile);
 
         } catch (ParserConfigurationException | IOException | TransformerException e) {
             throw new FxmlLoadException("Error appending game move to XML", e);
@@ -98,7 +106,7 @@ public class XmlUtils {
 
     public static synchronized List<GameMove> readGameMoves() {
         List<GameMove> moves = new ArrayList<>();
-        File xmlFile = new File(GAME_MOVES_XML_FILE);
+        File xmlFile = getGameMovesFile();
         if (!xmlFile.exists()) {
             return moves;
         }
@@ -151,15 +159,19 @@ public class XmlUtils {
     }
 
     public static synchronized void clearGameMoves() {
-        Path path = Paths.get(GAME_MOVES_XML_FILE);
+        File xmlFile = getGameMovesFile();
         try {
-            Files.deleteIfExists(path);
+            if (Files.deleteIfExists(xmlFile.toPath())) {
+                log.info("Game moves file deleted successfully at: {}", xmlFile.getAbsolutePath());
+            } else {
+                log.warn("Attempted to delete game moves file, but it did not exist: {}", xmlFile.getAbsolutePath());
+            }
         } catch (IOException e) {
             throw new FxmlLoadException("Failed to delete game moves XML file", e);
         }
     }
 
-    private static void writeDocument(Document doc) throws TransformerException, IOException {
+    private static void writeDocument(Document doc, File file) throws TransformerException, IOException {
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
         transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
         transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
@@ -168,7 +180,7 @@ public class XmlUtils {
 
         DOMSource source = new DOMSource(doc);
 
-        try (FileWriter writer = new FileWriter(XmlUtils.GAME_MOVES_XML_FILE)) {
+        try (FileWriter writer = new FileWriter(file)) {
             StreamResult result = new StreamResult(writer);
             transformer.transform(source, result);
         }

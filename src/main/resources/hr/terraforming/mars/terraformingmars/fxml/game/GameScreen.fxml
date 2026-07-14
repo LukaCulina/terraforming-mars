@@ -13,7 +13,7 @@
             <MenuItem mnemonicParsing="false" text="Load" onAction="#loadGame"/>
             <MenuItem mnemonicParsing="false" text="Replay" onAction="#replayGame"/>
         </Menu>
-        <Menu mnemonicParsing="false" text="Documentation">
+        <Menu fx:id="documentationMenu" mnemonicParsing="false" text="Documentation">
             <MenuItem mnemonicParsing="false" text="Generate" onAction="#generateHtmlDocumentation"/>
         </Menu>
     </MenuBar>
