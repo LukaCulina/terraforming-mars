@@ -7,6 +7,7 @@ module hr.terraforming.mars.terraformingmars {
     requires java.rmi;
     requires java.naming;
     requires static lombok;
+    requires java.net.http;
 
     opens hr.terraforming.mars.terraformingmars to javafx.fxml;
     exports hr.terraforming.mars.terraformingmars;

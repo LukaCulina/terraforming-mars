@@ -17,6 +17,7 @@ public final class FxmlPaths {
     public static final String PLAYER_BOARD_RESOURCES = "game/PlayerResources.fxml";
     public static final String PRODUCTION_PHASE = "game/ProductionPhase.fxml";
     public static final String SELL_PATENTS = "game/SellPatents.fxml";
+    public static final String MOVE_SUGGESTION = "game/MoveSuggestion.fxml";
 
     private FxmlPaths() {
     }

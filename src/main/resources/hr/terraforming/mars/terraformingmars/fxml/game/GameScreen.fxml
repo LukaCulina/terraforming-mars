@@ -137,6 +137,14 @@
                                 HBox.hgrow="ALWAYS"
                                 maxWidth="Infinity"/>
 
+                        <Button fx:id="moveSuggestionButton"
+                                prefHeight="30.0"
+                                styleClass="pass-button"
+                                text="Suggest Move"
+                                onAction="#requestMoveSuggestion"
+                                HBox.hgrow="ALWAYS"
+                                maxWidth="Infinity"/>
+
                         <Button fx:id="cancelPlacementButton"
                                 prefHeight="30.0"
                                 styleClass="cancel-button"

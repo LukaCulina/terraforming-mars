@@ -1,9 +1,6 @@
 package hr.terraforming.mars.terraformingmars.controller.game;
 
-import hr.terraforming.mars.terraformingmars.coordinator.GameScreenCoordinator;
-import hr.terraforming.mars.terraformingmars.coordinator.GameSetupCoordinator;
-import hr.terraforming.mars.terraformingmars.coordinator.NetworkCoordinator;
-import hr.terraforming.mars.terraformingmars.coordinator.ResponsiveLayoutCoordinator;
+import hr.terraforming.mars.terraformingmars.coordinator.*;
 import hr.terraforming.mars.terraformingmars.manager.*;
 import hr.terraforming.mars.terraformingmars.model.*;
 import hr.terraforming.mars.terraformingmars.replay.ReplayManager;
@@ -27,6 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 public class GameScreenController {
 
     private final GameStateService gameStateService = new GameStateService();
+    private final MoveSuggestionCoordinator moveSuggestionCoordinator = new MoveSuggestionCoordinator();
     @Getter
     @FXML
     public BorderPane gameBoardPane;
@@ -67,6 +65,8 @@ public class GameScreenController {
     @Setter
     @Getter
     public GameManager gameManager;
+    @FXML
+    public Button moveSuggestionButton;
     @Getter
     @FXML
     private AnchorPane hexBoardPane;
@@ -77,7 +77,6 @@ public class GameScreenController {
     private Button cancelPlacementButton;
     @FXML
     private Label lastMoveLabel;
-
     @Getter
     @FXML
     private VBox chatBoxContainer;
@@ -87,7 +86,6 @@ public class GameScreenController {
     @Getter
     @FXML
     private TextField chatInput;
-
     @Setter
     @Getter
     private GameBoard gameBoard;
@@ -110,14 +108,12 @@ public class GameScreenController {
     private Player viewedPlayer = null;
     @Getter
     private Timeline moveHistoryTimeline;
-
     @FXML
     private VBox topWrapper;
     @FXML
     private VBox bottomWrapper;
     @FXML
     private Menu documentationMenu;
-
     @Getter
     private PlayerBoardController currentPlayerBoardController;
     @Getter
@@ -195,8 +191,7 @@ public class GameScreenController {
 
     public void setGameControlsEnabled(boolean isEnabled) {
         gameScreenCoordinator.setGameControlsEnabled(isEnabled, currentPlayerBoardController,
-                passTurnButton, convertHeatButton, convertPlantsButton,
-                standardProjectsBox, milestonesBox);
+                passTurnButton, moveSuggestionButton, convertHeatButton, convertPlantsButton);
     }
 
     public void showPlayerBoard(Player player) {
@@ -219,6 +214,11 @@ public class GameScreenController {
 
             passTurnButton.setVisible(!visible);
             passTurnButton.setManaged(!visible);
+
+            if (moveSuggestionButton != null) {
+                moveSuggestionButton.setVisible(!visible);
+                moveSuggestionButton.setManaged(!visible);
+            }
         }
     }
 
@@ -244,6 +244,8 @@ public class GameScreenController {
         gameStateService.saveGame(gameManager, gameBoard);
     }
 
+    // Testne metode koje omogućuju lagan dolazak do kraja igre
+
     public void loadGame() {
         GameState loadedState = gameStateService.loadGame();
         if (loadedState != null) {
@@ -261,8 +263,6 @@ public class GameScreenController {
     public void updateLastMoveLabel(GameMove lastGameMove) {
         GameMoveUtils.updateLastMoveLabel(lastMoveLabel, lastGameMove);
     }
-
-    // Testne metode koje omogućuju lagan dolazak do kraja igre
 
     private void addDebugButtons() {
         HBox debugBox = new HBox(5);
@@ -288,5 +288,10 @@ public class GameScreenController {
             refreshGameScreen();
             broadcastIfHost();
         }
+    }
+
+    @FXML
+    private void requestMoveSuggestion() {
+        moveSuggestionCoordinator.requestSuggestion(moveSuggestionButton, gameManager, gameBoard, getSceneWindow());
     }
 }

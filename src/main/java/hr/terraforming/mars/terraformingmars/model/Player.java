@@ -92,6 +92,10 @@ public class Player implements Serializable {
         }
     }
 
+    public int getEffectiveCardCost(Card card) {
+        return state.getCardCost(card, corporation);
+    }
+
     public boolean canPlayCard(Card card) {
         if (card == null || !getHand().contains(card)) return false;
 
