@@ -3,16 +3,17 @@ package hr.terraforming.mars.terraformingmars.model;
 import hr.terraforming.mars.terraformingmars.enums.GamePhase;
 import hr.terraforming.mars.terraformingmars.exception.GameStateException;
 import hr.terraforming.mars.terraformingmars.manager.TurnManager;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import hr.terraforming.mars.terraformingmars.service.DeckService;
 import hr.terraforming.mars.terraformingmars.service.ProductionService;
 import hr.terraforming.mars.terraformingmars.service.ScoringService;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 @Slf4j
 public class GameManager implements Serializable {
@@ -27,7 +28,8 @@ public class GameManager implements Serializable {
     @Getter
     private int generation = 0;
 
-    @Setter @Getter
+    @Setter
+    @Getter
     private GamePhase currentPhase;
 
     public GameManager(List<Player> players, GameBoard gameBoard) {

@@ -8,6 +8,7 @@ import hr.terraforming.mars.terraformingmars.enums.StandardProject;
 import hr.terraforming.mars.terraformingmars.model.GameBoard;
 import hr.terraforming.mars.terraformingmars.model.GameManager;
 import hr.terraforming.mars.terraformingmars.model.Player;
+import hr.terraforming.mars.terraformingmars.service.CostService;
 import hr.terraforming.mars.terraformingmars.view.HexBoardDrawer;
 import hr.terraforming.mars.terraformingmars.view.component.ActionPanelComponents;
 import hr.terraforming.mars.terraformingmars.view.component.GlobalStatusComponents;
@@ -101,18 +102,24 @@ public class GameScreenManager {
         boolean isActionPhase = getGameManager().getCurrentPhase() == GamePhase.ACTIONS;
         boolean canPerformAction = getGameManager().getActionsTakenThisTurn() < 2;
 
-        actionPanels.standardProjectsBox().getChildren().forEach(node -> {
+        boolean areControlsEnabled = isActionPhase && canPerformAction && !isPlacing;
+
+        actionPanels.standardProjectsFlow().getChildren().forEach(node -> {
             if (node instanceof Button button) {
                 StandardProject project = (StandardProject) button.getUserData();
                 if (project != null) {
-                    boolean canAfford = currentPlayer.getMC() >= project.getCost();
-                    boolean shouldDisable = isPlacing || !canAfford || !isActionPhase || !canPerformAction;
+                    int finalCost = CostService.getFinalProjectCost(project, currentPlayer);
+                    boolean hasEnoughMC = currentPlayer.getMC() >= finalCost;
+
+                    boolean shouldDisable = !areControlsEnabled || !hasEnoughMC;
+
                     if (project == StandardProject.AQUIFER) {
                         shouldDisable = shouldDisable || !getGameBoard().canPlaceOcean();
                     } else if (project == StandardProject.SELL_PATENTS) {
                         boolean hasCardsInHand = !currentPlayer.getHand().isEmpty();
                         shouldDisable = shouldDisable || !hasCardsInHand;
                     }
+
                     button.setDisable(shouldDisable);
                 }
             }

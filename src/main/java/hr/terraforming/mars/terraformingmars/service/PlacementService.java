@@ -6,6 +6,7 @@ import hr.terraforming.mars.terraformingmars.enums.StandardProject;
 import hr.terraforming.mars.terraformingmars.enums.TileType;
 import hr.terraforming.mars.terraformingmars.model.*;
 import lombok.extern.slf4j.Slf4j;
+
 import java.util.List;
 
 @Slf4j
@@ -145,5 +146,6 @@ public record PlacementService(GameBoard gameBoard) {
             TileType tileType,
             Card card,
             StandardProject project
-    ) {}
+    ) {
+    }
 }

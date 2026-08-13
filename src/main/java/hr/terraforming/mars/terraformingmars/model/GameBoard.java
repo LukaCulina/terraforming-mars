@@ -7,34 +7,21 @@ import hr.terraforming.mars.terraformingmars.util.HexGridUtils;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import java.io.*;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.*;
 
 @Slf4j
 public class GameBoard implements Serializable {
 
-    @Getter
-    private int oxygenLevel;
-    @Getter
-    private int temperature;
-    @Getter
-    private int oceansPlaced;
-    private final Map<Milestone, Player> claimedMilestones = new EnumMap<>(Milestone.class);
     public static final int MAX_MILESTONES = 3;
-    @Getter
-    private boolean isFinalGeneration = false;
-
     public static final int MAX_OXYGEN = 14;
     public static final int MAX_TEMPERATURE = 8;
     public static final int MIN_TEMPERATURE = -30;
     public static final int MAX_OCEANS = 9;
-
-    @Setter
-    private transient Runnable onGlobalParametersChanged;
-    private transient PlacementService placementService;
-
-    @Getter
-    private final List<Tile> tiles = new ArrayList<>();
     private static final Set<String> OCEAN_COORDINATES = Set.of(
             "0,1", "0,3", "0,4",
             "1,5",
@@ -43,6 +30,20 @@ public class GameBoard implements Serializable {
             "5,5", "5,6", "5,7",
             "8,4"
     );
+    private final Map<Milestone, Player> claimedMilestones = new EnumMap<>(Milestone.class);
+    @Getter
+    private final List<Tile> tiles = new ArrayList<>();
+    @Getter
+    private int oxygenLevel;
+    @Getter
+    private int temperature;
+    @Getter
+    private int oceansPlaced;
+    @Getter
+    private boolean isFinalGeneration = false;
+    @Setter
+    private transient Runnable onGlobalParametersChanged;
+    private transient PlacementService placementService;
 
     public GameBoard() {
         this.placementService = new PlacementService(this);
@@ -111,7 +112,9 @@ public class GameBoard implements Serializable {
         return OCEAN_COORDINATES.contains(row + "," + col);
     }
 
-    public int[] getHexesInRow() { return HexGridUtils.getHexesInRow(); }
+    public int[] getHexesInRow() {
+        return HexGridUtils.getHexesInRow();
+    }
 
     public boolean canIncreaseOxygen() {
         if (getOxygenLevel() < MAX_OXYGEN) {

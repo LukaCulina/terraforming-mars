@@ -3,15 +3,14 @@ package hr.terraforming.mars.terraformingmars.coordinator;
 import hr.terraforming.mars.terraformingmars.controller.game.PlayerBoardController;
 import hr.terraforming.mars.terraformingmars.enums.PlayerType;
 import hr.terraforming.mars.terraformingmars.manager.ActionManager;
-import hr.terraforming.mars.terraformingmars.model.GameManager;
-import hr.terraforming.mars.terraformingmars.manager.PlacementManager;
 import hr.terraforming.mars.terraformingmars.manager.GameScreenManager;
+import hr.terraforming.mars.terraformingmars.manager.PlacementManager;
 import hr.terraforming.mars.terraformingmars.model.ApplicationConfiguration;
+import hr.terraforming.mars.terraformingmars.model.GameManager;
 import hr.terraforming.mars.terraformingmars.model.Player;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 
 import java.util.List;
 
@@ -56,12 +55,10 @@ public class GameScreenCoordinator {
     }
 
     public void setGameControlsEnabled(boolean isEnabled, PlayerBoardController playerBoardController,
-                                       Button passTurnButton, Button convertHeatButton,
-                                       Button convertPlantsButton, VBox standardProjectsBox,
-                                       VBox milestonesBox) {
+                                       Button passTurnButton, Button moveSuggestionButton, Button convertHeatButton,
+                                       Button convertPlantsButton) {
 
-        List.of(passTurnButton, convertHeatButton, convertPlantsButton,
-                        standardProjectsBox, milestonesBox)
+        List.of(passTurnButton, moveSuggestionButton, convertHeatButton, convertPlantsButton)
                 .forEach(node -> {
                     if (node != null) node.setDisable(!isEnabled);
                 });
