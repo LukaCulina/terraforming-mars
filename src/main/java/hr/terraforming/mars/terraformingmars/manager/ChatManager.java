@@ -1,6 +1,7 @@
 package hr.terraforming.mars.terraformingmars.manager;
 
 import hr.terraforming.mars.terraformingmars.chat.ChatService;
+import hr.terraforming.mars.terraformingmars.chat.ChatServiceImpl;
 import hr.terraforming.mars.terraformingmars.config.ConfigurationKey;
 import hr.terraforming.mars.terraformingmars.config.ConfigurationReader;
 import hr.terraforming.mars.terraformingmars.enums.PlayerType;
@@ -19,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 
 @Slf4j
@@ -47,12 +49,40 @@ public class ChatManager {
         }
     }
 
+    public void startLocalRmiRegistry() {
+        try {
+            int rmiPort = ConfigurationReader.getIntegerValue(ConfigurationKey.RMI_PORT);
+
+            Registry registry = getOrCreateRegistry(rmiPort);
+
+            ChatService chatRemoteService = new ChatServiceImpl();
+            ChatService skeleton = (ChatService) UnicastRemoteObject.exportObject(chatRemoteService, 0);
+            registry.rebind(ChatService.REMOTE_OBJECT_NAME, skeleton);
+
+            log.info("Local RMI Registry for Chat started on port {}", rmiPort);
+        } catch (RemoteException e) {
+            log.error("Failed to start local RMI registry", e);
+        }
+    }
+
+    private Registry getOrCreateRegistry(int port) throws RemoteException {
+        try {
+            return LocateRegistry.createRegistry(port);
+        } catch (RemoteException _) {
+            return LocateRegistry.getRegistry(port);
+        }
+    }
+
     public void setupChatSystem(PlayerType playerType) {
         boolean isOnline = (playerType != PlayerType.LOCAL);
 
         if (chatBoxContainer != null) {
             chatBoxContainer.setVisible(isOnline);
             chatBoxContainer.setManaged(isOnline);
+        }
+
+        if (playerType == PlayerType.HOST) {
+            startLocalRmiRegistry();
         }
 
         if (isOnline) {
