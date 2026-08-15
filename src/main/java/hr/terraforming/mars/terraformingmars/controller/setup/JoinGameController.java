@@ -1,16 +1,16 @@
 package hr.terraforming.mars.terraformingmars.controller.setup;
 
-import hr.terraforming.mars.terraformingmars.jndi.ConfigurationKey;
-import hr.terraforming.mars.terraformingmars.jndi.ConfigurationReader;
+import hr.terraforming.mars.terraformingmars.config.ConfigurationKey;
+import hr.terraforming.mars.terraformingmars.config.ConfigurationReader;
 import hr.terraforming.mars.terraformingmars.model.ApplicationConfiguration;
 import hr.terraforming.mars.terraformingmars.network.ClientGameCoordinator;
 import hr.terraforming.mars.terraformingmars.network.GameClientThread;
 import hr.terraforming.mars.terraformingmars.view.ScreenNavigator;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import lombok.extern.slf4j.Slf4j;
-
-import javafx.scene.control.*;
 
 @Slf4j
 public class JoinGameController {

@@ -1,7 +1,7 @@
 package hr.terraforming.mars.terraformingmars.chat;
 
-import hr.terraforming.mars.terraformingmars.jndi.ConfigurationKey;
-import hr.terraforming.mars.terraformingmars.jndi.ConfigurationReader;
+import hr.terraforming.mars.terraformingmars.config.ConfigurationKey;
+import hr.terraforming.mars.terraformingmars.config.ConfigurationReader;
 import lombok.extern.slf4j.Slf4j;
 
 import java.rmi.RemoteException;

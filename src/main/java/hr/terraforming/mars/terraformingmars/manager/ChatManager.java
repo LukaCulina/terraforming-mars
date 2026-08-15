@@ -1,9 +1,9 @@
 package hr.terraforming.mars.terraformingmars.manager;
 
 import hr.terraforming.mars.terraformingmars.chat.ChatService;
+import hr.terraforming.mars.terraformingmars.config.ConfigurationKey;
+import hr.terraforming.mars.terraformingmars.config.ConfigurationReader;
 import hr.terraforming.mars.terraformingmars.enums.PlayerType;
-import hr.terraforming.mars.terraformingmars.jndi.ConfigurationKey;
-import hr.terraforming.mars.terraformingmars.jndi.ConfigurationReader;
 import hr.terraforming.mars.terraformingmars.model.ApplicationConfiguration;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -23,11 +23,10 @@ import java.util.List;
 
 @Slf4j
 public class ChatManager {
-    private ChatService chatService;
-
     private final ListView<String> chatListView;
     private final TextField chatInput;
     private final VBox chatBoxContainer;
+    private ChatService chatService;
 
     public ChatManager(ListView<String> chatListView, TextField chatInput, VBox chatBoxContainer) {
         this.chatListView = chatListView;

@@ -5,7 +5,6 @@ module hr.terraforming.mars.terraformingmars {
     requires org.slf4j;
     requires com.google.gson;
     requires java.rmi;
-    requires java.naming;
     requires static lombok;
     requires java.net.http;
 
@@ -28,8 +27,6 @@ module hr.terraforming.mars.terraformingmars {
     exports hr.terraforming.mars.terraformingmars.effect;
     exports hr.terraforming.mars.terraformingmars.replay;
     opens hr.terraforming.mars.terraformingmars.replay to javafx.fxml;
-    exports hr.terraforming.mars.terraformingmars.jndi;
-    opens hr.terraforming.mars.terraformingmars.jndi to javafx.fxml;
     exports hr.terraforming.mars.terraformingmars.chat to java.rmi;
     exports hr.terraforming.mars.terraformingmars.coordinator;
     opens hr.terraforming.mars.terraformingmars.coordinator to javafx.fxml;
@@ -38,4 +35,5 @@ module hr.terraforming.mars.terraformingmars {
     opens hr.terraforming.mars.terraformingmars.controller.game to javafx.fxml;
     exports hr.terraforming.mars.terraformingmars.controller.game;
     exports hr.terraforming.mars.terraformingmars.network.message;
+    opens hr.terraforming.mars.terraformingmars.config to javafx.fxml;
 }

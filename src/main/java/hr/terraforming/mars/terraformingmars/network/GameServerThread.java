@@ -1,9 +1,9 @@
 package hr.terraforming.mars.terraformingmars.network;
 
+import hr.terraforming.mars.terraformingmars.config.ConfigurationKey;
+import hr.terraforming.mars.terraformingmars.config.ConfigurationReader;
 import hr.terraforming.mars.terraformingmars.exception.ConfigurationException;
 import hr.terraforming.mars.terraformingmars.exception.NetworkException;
-import hr.terraforming.mars.terraformingmars.jndi.ConfigurationKey;
-import hr.terraforming.mars.terraformingmars.jndi.ConfigurationReader;
 import hr.terraforming.mars.terraformingmars.manager.ActionManager;
 import hr.terraforming.mars.terraformingmars.model.GameBoard;
 import hr.terraforming.mars.terraformingmars.model.GameManager;

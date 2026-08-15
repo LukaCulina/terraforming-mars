@@ -1,4 +1,4 @@
-package hr.terraforming.mars.terraformingmars.jndi;
+package hr.terraforming.mars.terraformingmars.config;
 
 import hr.terraforming.mars.terraformingmars.exception.ConfigurationException;
 
