@@ -12,13 +12,30 @@ import javafx.application.Platform;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextInputDialog;
 import javafx.stage.Window;
 
+import java.util.Optional;
+
 public class MoveSuggestionCoordinator {
-    private final MoveSuggestionService moveSuggestionService = new MoveSuggestionService(System.getenv("GEMINI_API_KEY"));
+    private final MoveSuggestionService moveSuggestionService = new MoveSuggestionService();
 
     public void requestSuggestion(Button moveSuggestionButton, GameManager gameManager, GameBoard gameBoard, Window ownerWindow) {
         if (moveSuggestionButton.isDisabled()) return;
+
+        if (!moveSuggestionService.hasValidApiKey()) {
+            TextInputDialog dialog = new TextInputDialog();
+            dialog.setTitle("Gemini API Key Required");
+            dialog.setHeaderText("To use the AI suggestion feature, you need a Google Gemini API Key.");
+            dialog.setContentText("Please enter your API Key:");
+
+            Optional<String> result = dialog.showAndWait();
+            if (result.isPresent() && !result.get().isBlank()) {
+                moveSuggestionService.setApiKey(result.get().trim());
+            } else {
+                return;
+            }
+        }
 
         Player currentPlayer = gameManager.getCurrentPlayer();
         moveSuggestionButton.setDisable(true);
