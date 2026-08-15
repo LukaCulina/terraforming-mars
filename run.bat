@@ -3,11 +3,19 @@ echo ==========================================
 echo   Terraforming Mars - FAST RUN
 echo ==========================================
 
-:: [1/2] Build the project JAR (skipping tests for speed)
-echo Building the project JAR...
-call mvn clean package -DskipTests
+echo Closing existing game...
+taskkill /F /IM "TerraformingMars.exe" 2>nul
 
-:: [2/2] Launch the game directly from the JAR
+echo Building the project JAR...
+call mvn package -DskipTests
+
+if %errorlevel% neq 0 (
+    echo.
+    echo [!] Build failed! Game will not be launched.
+    pause
+    exit /b %errorlevel%
+)
+
 echo Launching the game...
 java -jar target\TerraformingMars-1.0-SNAPSHOT.jar
 
