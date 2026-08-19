@@ -1,9 +1,6 @@
 package hr.terraforming.mars.terraformingmars.manager;
 
-import hr.terraforming.mars.terraformingmars.enums.ActionType;
-import hr.terraforming.mars.terraformingmars.enums.Milestone;
-import hr.terraforming.mars.terraformingmars.enums.PlayerType;
-import hr.terraforming.mars.terraformingmars.enums.StandardProject;
+import hr.terraforming.mars.terraformingmars.enums.*;
 import hr.terraforming.mars.terraformingmars.factory.CardFactory;
 import hr.terraforming.mars.terraformingmars.model.*;
 import lombok.extern.slf4j.Slf4j;
@@ -52,6 +49,15 @@ public record GameMoveManager(ActionManager actionManager) {
                     actionManager.handleClaimMilestone(milestone);
                 } catch (IllegalArgumentException _) {
                     log.warn("Invalid milestone: {}", move.details());
+                }
+            }
+
+            case FUND_AWARD -> {
+                try {
+                    Award award = Award.valueOf(move.details());
+                    actionManager.handleFundAward(award);
+                } catch (IllegalArgumentException _) {
+                    log.warn("Invalid award: {}", move.details());
                 }
             }
 

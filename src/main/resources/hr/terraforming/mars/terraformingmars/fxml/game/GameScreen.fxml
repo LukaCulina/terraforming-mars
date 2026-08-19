@@ -38,33 +38,40 @@
                             <ColumnConstraints hgrow="SOMETIMES" percentWidth="30.0"/>
                         </columnConstraints>
                         <rowConstraints>
-                            <RowConstraints valignment="CENTER" vgrow="SOMETIMES"/>
+                            <RowConstraints valignment="TOP" vgrow="SOMETIMES"/>
                         </rowConstraints>
 
-                        <VBox alignment="TOP_CENTER" spacing="5" GridPane.columnIndex="0">
-                            <Label styleClass="project-milestone" text="Conversion"/>
-                            <Button fx:id="convertHeatButton" styleClass="convert-button" text="Convert Heat">
-                                <tooltip>
-                                    <Tooltip text="Convert 8 Heat to raise temperature"
-                                             showDelay="300ms"
-                                             styleClass="tooltip"/>
-                                </tooltip>
-                            </Button>
-                            <Button fx:id="convertPlantsButton" styleClass="convert-button" text="Convert Plants">
-                                <tooltip>
-                                    <Tooltip text="Convert 8 Plants to place a Greenery tile"
-                                             showDelay="300ms"
-                                             styleClass="tooltip"/>
-                                </tooltip>
-                            </Button>
+
+                        <VBox fx:id="milestonesBox" alignment="TOP_CENTER" spacing="5" GridPane.columnIndex="0"/>
+
+                        <VBox alignment="TOP_CENTER" spacing="10" GridPane.columnIndex="1">
+
+                            <VBox alignment="CENTER" spacing="5">
+                                <Label styleClass="project-milestone" text="Oceans Placed"/>
+                                <Label fx:id="oceansLabel" styleClass="ocean-counter-label" text="0 / 9"/>
+                            </VBox>
+
+                            <VBox alignment="CENTER" spacing="5">
+                                <Label styleClass="project-milestone" text="Conversion"/>
+
+                                <Button fx:id="convertHeatButton" styleClass="convert-button" text="Convert Heat">
+                                    <tooltip>
+                                        <Tooltip text="Convert 8 Heat to raise temperature"
+                                                 showDelay="300ms"
+                                                 styleClass="tooltip"/>
+                                    </tooltip>
+                                </Button>
+                                <Button fx:id="convertPlantsButton" styleClass="convert-button" text="Convert Plants">
+                                    <tooltip>
+                                        <Tooltip text="Convert 8 Plants to place a Greenery tile"
+                                                 showDelay="300ms"
+                                                 styleClass="tooltip"/>
+                                    </tooltip>
+                                </Button>
+                            </VBox>
                         </VBox>
 
-                        <VBox alignment="CENTER" spacing="5" GridPane.columnIndex="1">
-                            <Label styleClass="project-milestone" text="Oceans Placed"/>
-                            <Label fx:id="oceansLabel" styleClass="ocean-counter-label" text="0 / 9"/>
-                        </VBox>
-
-                        <VBox fx:id="milestonesBox" alignment="TOP_CENTER" spacing="5" GridPane.columnIndex="2"/>
+                        <VBox fx:id="awardsBox" alignment="TOP_CENTER" spacing="5" GridPane.columnIndex="2"/>
                     </GridPane>
                 </VBox>
             </bottom>

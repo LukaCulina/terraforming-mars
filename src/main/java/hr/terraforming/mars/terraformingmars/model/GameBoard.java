@@ -1,5 +1,6 @@
 package hr.terraforming.mars.terraformingmars.model;
 
+import hr.terraforming.mars.terraformingmars.enums.Award;
 import hr.terraforming.mars.terraformingmars.enums.Milestone;
 import hr.terraforming.mars.terraformingmars.enums.TileType;
 import hr.terraforming.mars.terraformingmars.service.PlacementService;
@@ -22,6 +23,7 @@ public class GameBoard implements Serializable {
     public static final int MAX_TEMPERATURE = 8;
     public static final int MIN_TEMPERATURE = -30;
     public static final int MAX_OCEANS = 9;
+    public static final int MAX_AWARDS = 3;
     private static final Set<String> OCEAN_COORDINATES = Set.of(
             "0,1", "0,3", "0,4",
             "1,5",
@@ -31,6 +33,8 @@ public class GameBoard implements Serializable {
             "8,4"
     );
     private final Map<Milestone, Player> claimedMilestones = new EnumMap<>(Milestone.class);
+    private final Map<Award, Player> fundedAwards = new EnumMap<>(Award.class);
+
     @Getter
     private final List<Tile> tiles = new ArrayList<>();
     @Getter
@@ -163,6 +167,31 @@ public class GameBoard implements Serializable {
 
         log.info("{} has claimed the milestone: {}!", player.getName(), milestone.getName());
         return true;
+    }
+
+    public int getNextAwardCost() {
+        int size = fundedAwards.size();
+        if (size == 0) return 8;
+        if (size == 1) return 14;
+        return 20;
+    }
+
+    public boolean canFundAward(Award award, Player player) {
+        if (fundedAwards.size() >= MAX_AWARDS) {
+            log.warn("Maximum number of awards already funded.");
+            return false;
+        }
+        if (fundedAwards.containsKey(award)) {
+            log.warn("Award '{}' has already been funded.", award.getName());
+            return false;
+        }
+        fundedAwards.put(award, player);
+        log.info("{} funded the award: {}", player.getName(), award.getName());
+        return true;
+    }
+
+    public Map<Award, Player> getFundedAwards() {
+        return Collections.unmodifiableMap(fundedAwards);
     }
 
     public Map<Milestone, Player> getClaimedMilestones() {

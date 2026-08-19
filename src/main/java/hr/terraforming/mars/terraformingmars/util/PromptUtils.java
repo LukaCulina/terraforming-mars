@@ -20,11 +20,13 @@ public class PromptUtils {
 
     public static String generatePrompt(Player player, GameManager gameManager, GameBoard board) {
         StringBuilder sb = new StringBuilder("You are an expert strategist for Terraforming Mars. Analyze the game state and recommend ONE best next move in English.\n\n");
+
         appendPlayerOverview(sb, player, gameManager);
         appendCardsOverview(sb, player);
         appendBoardOverview(sb, board, player);
         appendMilestonesAndProjects(sb, board, player);
         appendPlantConversion(sb, player);
+
         return sb.append("Briefly explain (in 2 to 3 sentences) why this move is mathematically or strategically optimal.").toString();
     }
 

@@ -103,6 +103,10 @@ public class ActionManager {
         executionManager.handleClaimMilestone(milestone);
     }
 
+    public void handleFundAward(Award award) {
+        executionManager.handleFundAward(award);
+    }
+
     public void handleStandardProject(StandardProject project) {
         executionManager.handleStandardProject(project);
     }

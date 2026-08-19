@@ -6,6 +6,7 @@ public enum ActionType {
     PLAY_CARD,
     PLACE_TILE,
     CLAIM_MILESTONE,
+    FUND_AWARD,
     USE_STANDARD_PROJECT,
     CONVERT_HEAT,
     CONVERT_PLANTS,

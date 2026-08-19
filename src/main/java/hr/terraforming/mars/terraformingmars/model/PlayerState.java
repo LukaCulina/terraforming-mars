@@ -12,24 +12,25 @@ import java.util.*;
 
 public class PlayerState implements Serializable {
 
-    private int mcValue;
-    private int trValue;
-    private int tilePointsValue;
     private final Map<ResourceType, Integer> resourceValues = new EnumMap<>(ResourceType.class);
     private final Map<ResourceType, Integer> productionValues = new EnumMap<>(ResourceType.class);
-
-    private transient IntegerProperty tilePoints;
-    private transient IntegerProperty mc;
-    private transient IntegerProperty tr;
-    private transient Map<ResourceType, IntegerProperty> resources;
-    private transient Map<ResourceType, IntegerProperty> production;
-
     @Getter
     private final List<Milestone> claimedMilestones = new ArrayList<>();
     @Getter
     private final List<Card> hand = new ArrayList<>();
     @Getter
     private final List<Card> played = new ArrayList<>();
+    private int mcValue;
+    private int trValue;
+    private int tilePointsValue;
+    private int awardPointsValue = 0;
+
+    private transient IntegerProperty tilePoints;
+    private transient IntegerProperty mc;
+    private transient IntegerProperty tr;
+    private transient IntegerProperty awardPoints;
+    private transient Map<ResourceType, IntegerProperty> resources;
+    private transient Map<ResourceType, IntegerProperty> production;
 
     public PlayerState() {
         trValue = 20;
@@ -43,6 +44,7 @@ public class PlayerState implements Serializable {
         tr = new SimpleIntegerProperty(trValue);
         mc = new SimpleIntegerProperty(mcValue);
         tilePoints = new SimpleIntegerProperty(tilePointsValue);
+        awardPoints = new SimpleIntegerProperty(awardPointsValue);
 
         for (ResourceType type : ResourceType.values()) {
             resources.put(type, new SimpleIntegerProperty(resourceValues.getOrDefault(type, 0)));
@@ -65,14 +67,33 @@ public class PlayerState implements Serializable {
         resources.forEach((key, value) -> resourceValues.put(key, value.get()));
         production.forEach((key, value) -> productionValues.put(key, value.get()));
 
+        awardPointsValue = awardPoints.get();
         out.defaultWriteObject();
     }
 
-    public IntegerProperty tilePointsProperty() { return tilePoints; }
-    public IntegerProperty mcProperty() { return mc; }
-    public IntegerProperty trProperty() { return tr; }
-    public IntegerProperty resourceProperty(ResourceType type) { return resources.get(type); }
-    public IntegerProperty productionProperty(ResourceType type) { return production.get(type); }
+    public IntegerProperty tilePointsProperty() {
+        return tilePoints;
+    }
+
+    public IntegerProperty mcProperty() {
+        return mc;
+    }
+
+    public IntegerProperty trProperty() {
+        return tr;
+    }
+
+    public IntegerProperty awardPointsProperty() {
+        return awardPoints;
+    }
+
+    public IntegerProperty resourceProperty(ResourceType type) {
+        return resources.get(type);
+    }
+
+    public IntegerProperty productionProperty(ResourceType type) {
+        return production.get(type);
+    }
 
     public Map<ResourceType, IntegerProperty> getProductionMap() {
         return Collections.unmodifiableMap(production);
@@ -117,7 +138,7 @@ public class PlayerState implements Serializable {
 
         if (corporation.startingProduction() != null) {
             corporation.startingProduction().forEach((resourceType, amount) ->
-                productionProperty(resourceType).set(amount)
+                    productionProperty(resourceType).set(amount)
             );
         }
 

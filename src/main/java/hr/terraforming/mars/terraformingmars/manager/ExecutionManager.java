@@ -118,6 +118,23 @@ public class ExecutionManager {
         }
     }
 
+    public void handleFundAward(Award award) {
+        Player currentPlayer = getGameManager().getCurrentPlayer();
+        int cost = getGameBoard().getNextAwardCost();
+
+        if (currentPlayer.getMC() < cost) {
+            throw new GameStateException("Insufficient MC to fund award. Cost is: " + cost);
+        }
+
+        if (getGameBoard().canFundAward(award, currentPlayer)) {
+            currentPlayer.canSpendMC(cost);
+            actionManager.performAction();
+            GameMove move = new GameMove(currentPlayer.getName(), ActionType.FUND_AWARD, award.name(),
+                    "funded award: " + award.getName(), LocalDateTime.now(ZoneOffset.UTC));
+            actionManager.saveMove(move);
+        }
+    }
+
     public void handleStandardProject(StandardProject project) {
         Player currentPlayer = getGameManager().getCurrentPlayer();
         int finalCost = CostService.getFinalProjectCost(project, currentPlayer);

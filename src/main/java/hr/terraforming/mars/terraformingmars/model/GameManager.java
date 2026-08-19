@@ -170,6 +170,6 @@ public class GameManager implements Serializable {
     }
 
     public List<Player> calculateFinalScores() {
-        return ScoringService.calculateFinalScores(players);
+        return ScoringService.calculateFinalScores(players, getGameBoard());
     }
 }

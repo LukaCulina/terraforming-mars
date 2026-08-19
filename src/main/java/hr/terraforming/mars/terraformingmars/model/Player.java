@@ -9,6 +9,7 @@ import javafx.scene.paint.Color;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
@@ -16,20 +17,20 @@ import java.util.Map;
 @Slf4j
 public class Player implements Serializable {
 
-    @Getter @Setter
-    private String name;
-    @Getter
-    private final int playerNumber;
-    @Getter
-    private Corporation corporation;
-    private final PlayerState state;
-    @Setter
-    private transient GameBoard board;
-
     private static final List<Color> PLAYER_COLORS = List.of(
             Color.rgb(220, 60, 60), Color.rgb(60, 150, 220), Color.rgb(80, 180, 80),
             Color.rgb(240, 180, 50), Color.rgb(100, 100, 100)
     );
+    @Getter
+    private final int playerNumber;
+    private final PlayerState state;
+    @Getter
+    @Setter
+    private String name;
+    @Getter
+    private Corporation corporation;
+    @Setter
+    private transient GameBoard board;
 
     public Player(String name, int playerNumber) {
         this.name = name;
@@ -48,21 +49,53 @@ public class Player implements Serializable {
         corporation.startingProduction().forEach(this::increaseProduction);
     }
 
-    public IntegerProperty mcProperty() { return state.mcProperty(); }
-    public IntegerProperty trProperty() { return state.trProperty(); }
-    public IntegerProperty resourceProperty(ResourceType type) { return state.resourceProperty(type); }
-    public IntegerProperty productionProperty(ResourceType type) { return state.productionProperty(type); }
+    public IntegerProperty mcProperty() {
+        return state.mcProperty();
+    }
 
-    public int getMC() { return state.mcProperty().get(); }
-    public int getTR() { return state.trProperty().get(); }
-    public int getProduction(ResourceType type) { return state.productionProperty(type).get(); }
-    public Map<ResourceType, IntegerProperty> getProductionMap() { return state.getProductionMap(); }
-    public List<Card> getHand() { return state.getHand(); }
-    public List<Card> getPlayed() { return state.getPlayed(); }
+    public IntegerProperty trProperty() {
+        return state.trProperty();
+    }
 
-    public void addCardsToHand(List<Card> cardsToAdd) { getHand().addAll(cardsToAdd); }
+    public IntegerProperty resourceProperty(ResourceType type) {
+        return state.resourceProperty(type);
+    }
 
-    public void addMC(int amount) { mcProperty().set(getMC() + amount); }
+    public IntegerProperty productionProperty(ResourceType type) {
+        return state.productionProperty(type);
+    }
+
+    public int getMC() {
+        return state.mcProperty().get();
+    }
+
+    public int getTR() {
+        return state.trProperty().get();
+    }
+
+    public int getProduction(ResourceType type) {
+        return state.productionProperty(type).get();
+    }
+
+    public Map<ResourceType, IntegerProperty> getProductionMap() {
+        return state.getProductionMap();
+    }
+
+    public List<Card> getHand() {
+        return state.getHand();
+    }
+
+    public List<Card> getPlayed() {
+        return state.getPlayed();
+    }
+
+    public void addCardsToHand(List<Card> cardsToAdd) {
+        getHand().addAll(cardsToAdd);
+    }
+
+    public void addMC(int amount) {
+        mcProperty().set(getMC() + amount);
+    }
 
     public boolean canSpendMC(int amount) {
         if (getMC() >= amount) {
@@ -148,9 +181,21 @@ public class Player implements Serializable {
                 .count();
     }
 
-    public void addClaimedMilestone(Milestone milestone) { state.getClaimedMilestones().add(milestone); }
+    public void addClaimedMilestone(Milestone milestone) {
+        state.getClaimedMilestones().add(milestone);
+    }
 
-    public int getMilestonePoints() { return state.getClaimedMilestones().size() * 5; }
+    public int getMilestonePoints() {
+        return state.getClaimedMilestones().size() * 5;
+    }
+
+    public void addAwardPoints(int points) {
+        state.awardPointsProperty().set(state.awardPointsProperty().get() + points);
+    }
+
+    public int getAwardPoints() {
+        return state.awardPointsProperty().get();
+    }
 
     public long getOwnedCityCount() {
         if (board == null) return 0;
@@ -166,10 +211,10 @@ public class Player implements Serializable {
         if (board == null) return;
         long greeneryPoints = getOwnedGreeneryCount();
         long cityPoints = board.getTiles().stream()
-            .filter(t -> t.getOwner() == this && t.getType() == TileType.CITY)
-            .mapToLong(city -> board.getAdjacentTiles(city).stream()
-                    .filter(adj -> adj.getType() == TileType.GREENERY).count())
-            .sum();
+                .filter(t -> t.getOwner() == this && t.getType() == TileType.CITY)
+                .mapToLong(city -> board.getAdjacentTiles(city).stream()
+                        .filter(adj -> adj.getType() == TileType.GREENERY).count())
+                .sum();
 
         int totalTilePoints = (int) (greeneryPoints + cityPoints);
         state.tilePointsProperty().set(totalTilePoints);
@@ -183,7 +228,7 @@ public class Player implements Serializable {
 
     public int getFinalScore() {
         int cardPoints = getPlayed().stream().mapToInt(Card::getVictoryPoints).sum();
-        return getTR() + getMilestonePoints() + getTilePoints() + cardPoints;
+        return getTR() + getMilestonePoints() + getAwardPoints() + getTilePoints() + cardPoints;
     }
 
     public void resetForNewGame() {

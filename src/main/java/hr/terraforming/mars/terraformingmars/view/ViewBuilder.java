@@ -1,6 +1,7 @@
 package hr.terraforming.mars.terraformingmars.view;
 
 import hr.terraforming.mars.terraformingmars.controller.game.GameScreenController;
+import hr.terraforming.mars.terraformingmars.enums.Award;
 import hr.terraforming.mars.terraformingmars.enums.Milestone;
 import hr.terraforming.mars.terraformingmars.enums.StandardProject;
 import hr.terraforming.mars.terraformingmars.manager.ActionManager;
@@ -40,6 +41,7 @@ public record ViewBuilder(GameScreenController controller, ActionManager actionM
             milestoneButton.prefWidthProperty().bind(milestoneBox.widthProperty().multiply(0.8));
             milestoneButton.getStyleClass().add("milestone-button");
             milestoneButton.setUserData(milestone);
+            milestoneButton.setFocusTraversable(false);
             milestoneButton.setOnAction(_ -> actionManager.handleClaimMilestone(milestone));
 
             Tooltip tooltip = new Tooltip(milestone.getDescription() + "\n(Price: 8 MC)");
@@ -48,6 +50,28 @@ public record ViewBuilder(GameScreenController controller, ActionManager actionM
             milestoneButton.setTooltip(tooltip);
 
             milestoneBox.getChildren().add(milestoneButton);
+        }
+    }
+
+    public void createAwardButtons(VBox awardsBox) {
+        awardsBox.getChildren().clear();
+        Label awardsLabel = new Label("Awards");
+        awardsLabel.getStyleClass().add("project-award");
+        awardsBox.getChildren().add(awardsLabel);
+
+        for (Award award : Award.values()) {
+            Button awardButton = new Button(award.getName());
+            awardButton.prefWidthProperty().bind(awardsBox.widthProperty().multiply(0.8));
+            awardButton.getStyleClass().add("award-button");
+            awardButton.setUserData(award);
+            awardButton.setFocusTraversable(false);
+            awardButton.setOnAction(_ -> actionManager.handleFundAward(award));
+
+            Tooltip tooltip = new Tooltip(award.getDescription());
+            tooltip.setShowDelay(Duration.millis(300));
+            awardButton.setTooltip(tooltip);
+
+            awardsBox.getChildren().add(awardButton);
         }
     }
 

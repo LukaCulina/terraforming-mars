@@ -1,10 +1,7 @@
 package hr.terraforming.mars.terraformingmars.replay;
 
 import hr.terraforming.mars.terraformingmars.controller.game.*;
-import hr.terraforming.mars.terraformingmars.enums.ActionType;
-import hr.terraforming.mars.terraformingmars.enums.Milestone;
-import hr.terraforming.mars.terraformingmars.enums.ResourceType;
-import hr.terraforming.mars.terraformingmars.enums.StandardProject;
+import hr.terraforming.mars.terraformingmars.enums.*;
 import hr.terraforming.mars.terraformingmars.exception.GameStateException;
 import hr.terraforming.mars.terraformingmars.factory.CardFactory;
 import hr.terraforming.mars.terraformingmars.model.*;
@@ -126,6 +123,7 @@ public record ReplayMoveExecutor(GameScreenController controller, ReplayLoader l
             case PLACE_TILE -> processPlaceTile(move, player);
             case PLAY_CARD -> processPlayCard(move, player, gameManager);
             case CLAIM_MILESTONE -> processClaimMilestone(move, player);
+            case FUND_AWARD -> processFundAward(move, player);
             case USE_STANDARD_PROJECT -> processUseStandardProject(move, player);
             case CONVERT_HEAT -> processConvertHeat(player);
             case CONVERT_PLANTS -> player.spendPlantsForGreenery();
@@ -169,6 +167,13 @@ public record ReplayMoveExecutor(GameScreenController controller, ReplayLoader l
         } catch (IllegalArgumentException e) {
             throw new GameStateException("Replay error: Invalid milestone name '" + move.details() + "'", e);
         }
+    }
+
+    private void processFundAward(GameMove move, Player player) {
+        Award award = Award.valueOf(move.details());
+        int cost = controller.getGameBoard().getNextAwardCost();
+        player.canSpendMC(cost);
+        controller.getGameBoard().canFundAward(award, player);
     }
 
     private void processUseStandardProject(GameMove move, Player player) {

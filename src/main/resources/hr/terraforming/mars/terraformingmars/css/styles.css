@@ -349,7 +349,7 @@
     -fx-cursor: hand;
 }
 
-.milestone-button {
+.milestone-button, .award-button {
     -fx-font-size: 1em;
     -fx-background-radius: 8;
     -fx-alignment: CENTER;
@@ -466,14 +466,14 @@
     -fx-padding: 5 0 5 0;
 }
 
-.project-milestone {
+.project-milestone, .project-award {
     -fx-font-weight: bold;
     -fx-text-fill: white;
     -fx-font-size: 1.1em;
     -fx-text-alignment: center;
 }
 
-.project-milestone-claimed {
+.project-milestone-claimed, .project-award-funded {
     -fx-background-color: #555;
 }
 

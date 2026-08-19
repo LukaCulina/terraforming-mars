@@ -61,6 +61,8 @@ public class GameScreenController {
     @FXML
     public VBox milestonesBox;
     @FXML
+    public VBox awardsBox;
+    @FXML
     public BorderPane playerInterface;
     @Setter
     @Getter
