@@ -15,9 +15,10 @@
         <Label text="Player" styleClass="header-label" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
         <Label text="TR" styleClass="header-label" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
         <Label text="Milestones" styleClass="header-label" GridPane.columnIndex="3" GridPane.rowIndex="0"/>
-        <Label text="Board" styleClass="header-label" GridPane.columnIndex="4" GridPane.rowIndex="0"/>
-        <Label text="Cards" styleClass="header-label" GridPane.columnIndex="5" GridPane.rowIndex="0"/>
-        <Label text="Total" styleClass="header-label" GridPane.columnIndex="6" GridPane.rowIndex="0"/>
+        <Label text="Awards" styleClass="header-label" GridPane.columnIndex="4" GridPane.rowIndex="0"/>
+        <Label text="Board" styleClass="header-label" GridPane.columnIndex="5" GridPane.rowIndex="0"/>
+        <Label text="Cards" styleClass="header-label" GridPane.columnIndex="6" GridPane.rowIndex="0"/>
+        <Label text="Total" styleClass="header-label" GridPane.columnIndex="7" GridPane.rowIndex="0"/>
         <padding>
             <Insets top="20" bottom="20"/>
         </padding>

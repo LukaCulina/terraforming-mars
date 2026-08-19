@@ -46,6 +46,7 @@ public class GameOverController {
         scoresGrid.add(createNormalLabel(player.getName()), col++, rowIndex);
         scoresGrid.add(createNormalLabel(String.valueOf(player.getTR())), col++, rowIndex);
         scoresGrid.add(createNormalLabel(String.valueOf(player.getMilestonePoints())), col++, rowIndex);
+        scoresGrid.add(createNormalLabel(String.valueOf(player.getAwardPoints())), col++, rowIndex);
         scoresGrid.add(createNormalLabel(String.valueOf(player.getTilePoints())), col++, rowIndex);
         scoresGrid.add(createNormalLabel(String.valueOf(cardPoints)), col++, rowIndex);
         scoresGrid.add(createHeaderLabel(String.valueOf(player.getFinalScore())), col, rowIndex);
