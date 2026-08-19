@@ -1,10 +1,7 @@
 package hr.terraforming.mars.terraformingmars.manager;
 
 import hr.terraforming.mars.terraformingmars.controller.game.GameScreenController;
-import hr.terraforming.mars.terraformingmars.enums.GamePhase;
-import hr.terraforming.mars.terraformingmars.enums.Milestone;
-import hr.terraforming.mars.terraformingmars.enums.ResourceType;
-import hr.terraforming.mars.terraformingmars.enums.StandardProject;
+import hr.terraforming.mars.terraformingmars.enums.*;
 import hr.terraforming.mars.terraformingmars.model.GameBoard;
 import hr.terraforming.mars.terraformingmars.model.GameManager;
 import hr.terraforming.mars.terraformingmars.model.Player;
@@ -55,8 +52,9 @@ public class GameScreenManager {
 
     public void updateGeneralUI(Player viewedPlayer, boolean isPlacing, boolean isMyTurn) {
         updateGlobalParameters();
-        updateStandardProjectButtonsState(isPlacing);
-        updateMilestoneButtonsState(isPlacing);
+        updateStandardProjectButtonsState(isPlacing, isMyTurn);
+        updateMilestoneButtonsState(isPlacing, isMyTurn);
+        updateAwardButtonsState(isPlacing, isMyTurn);
         updatePlayerButtonsHighlight(viewedPlayer);
         updateConvertButtonsState(isPlacing, isMyTurn);
         drawBoard();
@@ -96,13 +94,13 @@ public class GameScreenManager {
         }
     }
 
-    private void updateStandardProjectButtonsState(boolean isPlacing) {
+    private void updateStandardProjectButtonsState(boolean isPlacing, boolean isMyTurn) {
         Player currentPlayer = getGameManager().getCurrentPlayer();
 
         boolean isActionPhase = getGameManager().getCurrentPhase() == GamePhase.ACTIONS;
         boolean canPerformAction = getGameManager().getActionsTakenThisTurn() < 2;
 
-        boolean areControlsEnabled = isActionPhase && canPerformAction && !isPlacing;
+        boolean areControlsEnabled = isMyTurn && isActionPhase && canPerformAction && !isPlacing;
 
         actionPanels.standardProjectsFlow().getChildren().forEach(node -> {
             if (node instanceof Button button) {
@@ -126,7 +124,7 @@ public class GameScreenManager {
         });
     }
 
-    private void updateMilestoneButtonsState(boolean isPlacing) {
+    private void updateMilestoneButtonsState(boolean isPlacing, boolean isMyTurn) {
         Player currentPlayer = getGameManager().getCurrentPlayer();
         boolean isActionPhase = getGameManager().getCurrentPhase() == GamePhase.ACTIONS;
         Map<Milestone, Player> claimed = getGameBoard().getClaimedMilestones();
@@ -144,13 +142,53 @@ public class GameScreenManager {
                     } else {
                         boolean canAfford = currentPlayer.getMC() >= 8;
                         boolean requirementMet = milestone.canClaim(currentPlayer);
-                        button.setDisable(isPlacing || !isActionPhase || !canAfford || !requirementMet || claimed.size() >= GameBoard.MAX_MILESTONES);
+                        button.setDisable(!isMyTurn || isPlacing || !isActionPhase || !canAfford || !requirementMet || claimed.size() >= GameBoard.MAX_MILESTONES);
                         button.setText(milestone.getName());
                         button.setStyle("");
                     }
                 }
             }
         });
+    }
+
+    private void updateAwardButtonsState(boolean isPlacing, boolean isMyTurn) {
+        Player currentPlayer = getGameManager().getCurrentPlayer();
+        boolean isActionPhase = getGameManager().getCurrentPhase() == GamePhase.ACTIONS;
+        Map<Award, Player> funded = getGameBoard().getFundedAwards();
+        int currentCost = getGameBoard().getNextAwardCost();
+
+        actionPanels.awardsBox().getChildren().forEach(node -> {
+            if (node instanceof Button button) {
+                updateSingleAwardButton(button, isMyTurn, isPlacing, isActionPhase, currentPlayer, funded, currentCost);
+            }
+        });
+    }
+
+    private void updateSingleAwardButton(Button button, boolean isMyTurn, boolean isPlacing, boolean isActionPhase,
+                                         Player currentPlayer, Map<Award, Player> funded, int currentCost) {
+        Award award = (Award) button.getUserData();
+        if (award == null) {
+            return;
+        }
+
+        if (funded.containsKey(award)) {
+            Player owner = funded.get(award);
+            button.setText(award.getName() + " (" + owner.getName() + ")");
+            button.setDisable(true);
+            button.getStyleClass().add("project-award-funded");
+            return;
+        }
+
+        boolean maxAwardsReached = funded.size() >= GameBoard.MAX_AWARDS;
+        boolean canAfford = currentPlayer.getMC() >= currentCost;
+
+        button.setDisable(!isMyTurn || isPlacing || !isActionPhase || !canAfford || maxAwardsReached);
+
+        if (!maxAwardsReached) {
+            button.setText(award.getName() + " (" + currentCost + " MC)");
+        } else {
+            button.setText(award.getName());
+        }
     }
 
     private void updatePlayerButtonsHighlight(Player viewedPlayer) {
