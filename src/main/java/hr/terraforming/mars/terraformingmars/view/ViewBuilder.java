@@ -83,6 +83,7 @@ public record ViewBuilder(GameScreenController controller, ActionManager actionM
             projectButton.setPrefWidth(110);
             projectButton.getStyleClass().add("project-button");
             projectButton.setUserData(project);
+            projectButton.setFocusTraversable(false);
 
             Text icon = new Text(project.getIcon());
             icon.getStyleClass().add("icon");
